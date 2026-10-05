@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="HappyChildren - a clickable prototype of a parenting-presence app, with the research and feature reasoning behind each screen.">
+<meta name="description" content="HappyChildren - a parenting app from Koli Shema. One small thing to do with your child today, something to say, and then it closes.">
 <style>
   :root{color-scheme:light}
   html,body{margin:0}
@@ -13,53 +13,59 @@
 <title>HappyChildren</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
 
 <style>
-/* Layout: a working phone on the left, the argument for each screen on the right; stacks to one column on a phone. */
+/* Layout: a working phone beside the case for each screen; stacks to one column on a phone. Koli Shema brand — navy, coral, Poppins. */
 :root{
-  --paper:#F1EFF4;
+  --paper:#F3F2F8;
+  --paper-2:#FBFAFD;
   --card:#FFFFFF;
-  --ink:#2A2233;
-  --muted:#6A6077;
-  --line:#E2DEE8;
-  --accent:#A85A22;
-  --accent-soft:#F5E6D8;
-  --accent-ink:#FFFFFF;
-  --teal:#2F6B68;
-  --teal-soft:#DCEBE9;
-  --shadow:0 18px 44px -24px rgba(42,34,51,.45);
-  --display:"Newsreader",Georgia,"Times New Roman",serif;
-  --ui:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+  --ink:#1F1B56;
+  --muted:#6F6B91;
+  --line:#E6E3F0;
+  --coral:#EB4137;
+  --coral-ink:#FFFFFF;
+  --coral-soft:#FDECE9;
+  --coral-tint:#F3A79E;
+  --mid:#EE6E64;
+  --shadow:0 22px 54px -30px rgba(31,27,86,.5);
+  --shadow-sm:0 10px 28px -20px rgba(31,27,86,.55);
+  --display:"Poppins","Helvetica Neue",Arial,sans-serif;
+  --ui:"Poppins","Helvetica Neue",Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#15111D;
-    --card:#201A2B;
-    --ink:#EDE8F3;
-    --muted:#9B91A9;
-    --line:#312A3F;
-    --accent:#E7A063;
-    --accent-soft:#3A2A1E;
-    --accent-ink:#201A2B;
-    --teal:#6FB3AE;
-    --teal-soft:#1D332F;
-    --shadow:0 18px 44px -24px rgba(0,0,0,.8);
+    --paper:#15123E;
+    --paper-2:#1B1750;
+    --card:#241F61;
+    --ink:#F2F1FA;
+    --muted:#A8A3CE;
+    --line:#352F77;
+    --coral:#FF7E6A;
+    --coral-ink:#1F1B56;
+    --coral-soft:#36275F;
+    --coral-tint:#F3A79E;
+    --mid:#FF9281;
+    --shadow:0 22px 54px -30px rgba(0,0,0,.85);
+    --shadow-sm:0 10px 28px -20px rgba(0,0,0,.8);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#15111D;
-  --card:#201A2B;
-  --ink:#EDE8F3;
-  --muted:#9B91A9;
-  --line:#312A3F;
-  --accent:#E7A063;
-  --accent-soft:#3A2A1E;
-  --accent-ink:#201A2B;
-  --teal:#6FB3AE;
-  --teal-soft:#1D332F;
-  --shadow:0 18px 44px -24px rgba(0,0,0,.8);
+  --paper:#15123E;
+  --paper-2:#1B1750;
+  --card:#241F61;
+  --ink:#F2F1FA;
+  --muted:#A8A3CE;
+  --line:#352F77;
+  --coral:#FF7E6A;
+  --coral-ink:#1F1B56;
+  --coral-soft:#36275F;
+  --coral-tint:#F3A79E;
+  --mid:#FF9281;
+  --shadow:0 22px 54px -30px rgba(0,0,0,.85);
+  --shadow-sm:0 10px 28px -20px rgba(0,0,0,.8);
   color-scheme:dark;
 }
 
@@ -67,25 +73,28 @@
 html,body{margin:0}
 body{
   background:var(--paper);
+  background-image:linear-gradient(170deg,var(--paper-2) 0%,var(--paper) 46%);
+  background-attachment:fixed;
   color:var(--ink);
   font-family:var(--ui);
   font-size:16px;
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
-.stage{max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:40px 64px}
+.stage{max-width:1140px;margin:0 auto;padding-inline:20px;padding-block:44px 72px}
 
 /* ---------- masthead ---------- */
-.masthead{display:flex;flex-direction:column;gap:14px;margin-bottom:40px;max-width:62ch}
-.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.masthead{display:flex;flex-direction:column;gap:14px;margin-bottom:44px;max-width:64ch}
+.chev{width:62px;height:24px;display:block;margin-bottom:2px}
+.kicker{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--coral);font-weight:600}
 .masthead h1{
-  font-family:var(--display);font-weight:500;font-size:clamp(32px,5.6vw,50px);
-  line-height:1.06;margin:0;letter-spacing:-.01em;text-wrap:balance;
+  font-family:var(--display);font-weight:700;font-size:clamp(32px,5.4vw,50px);
+  line-height:1.08;margin:0;letter-spacing:-.025em;text-wrap:balance;
 }
-.masthead h1 em{font-style:italic;color:var(--accent)}
+.masthead h1 em{font-style:normal;color:var(--coral)}
 .standfirst{margin:0;color:var(--muted);font-size:17px;max-width:56ch}
-.flags{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.flag{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--muted)}
+.flags{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.flag{font-size:12px;font-weight:600;padding:5px 13px;border-radius:999px;background:var(--card);box-shadow:var(--shadow-sm);color:var(--muted)}
 
 /* ---------- workbench ---------- */
 .workbench{display:grid;grid-template-columns:360px minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:start}
@@ -96,14 +105,15 @@ body{
 @media (max-width:880px){.device{position:static}}
 .phone{
   width:min(340px,100%);height:clamp(580px,80vh,730px);
-  background:var(--card);border:1px solid var(--line);border-radius:34px;
+  background:var(--card);border-radius:36px;
   box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;position:relative;
 }
 .statusbar{
   display:flex;justify-content:space-between;align-items:center;
-  padding:14px 22px 6px;font-size:11px;color:var(--muted);font-weight:600;
+  padding:15px 24px 6px;font-size:11px;color:var(--muted);font-weight:600;
   font-variant-numeric:tabular-nums;flex:0 0 auto;
 }
+.statusbar span:nth-child(2){color:var(--ink);letter-spacing:-.01em}
 .viewport{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;padding:4px 20px 18px}
 .tabs{
   flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr);
@@ -111,174 +121,182 @@ body{
 }
 .tabs button{
   appearance:none;background:none;border:0;cursor:pointer;font-family:inherit;
-  padding:11px 2px 15px;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em;
+  padding:11px 2px 16px;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.01em;
   display:flex;flex-direction:column;align-items:center;gap:5px;
 }
 .tabs button .dot{width:5px;height:5px;border-radius:50%;background:transparent}
 .tabs button[aria-current="true"]{color:var(--ink)}
-.tabs button[aria-current="true"] .dot{background:var(--accent)}
+.tabs button[aria-current="true"] .dot{background:var(--coral)}
 .devicecaption{font-size:12px;color:var(--muted);text-align:center;max-width:320px}
 
 /* ---------- in-phone type ---------- */
 .screen{display:flex;flex-direction:column;gap:16px;animation:rise .22s ease-out}
 @keyframes rise{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.screen{animation:none}}
-.eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0}
-.s-title{font-family:var(--display);font-weight:500;font-size:27px;line-height:1.15;margin:0;letter-spacing:-.01em;text-wrap:balance}
+.eyebrow{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0}
+.s-title{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.18;margin:0;letter-spacing:-.025em;text-wrap:balance}
 .s-sub{margin:0;color:var(--muted);font-size:14px}
 .body-sm{margin:0;font-size:14.5px}
 
 /* ---------- controls ---------- */
 .btn{
   appearance:none;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;
-  border-radius:12px;padding:13px 16px;border:1px solid transparent;width:100%;
-  background:var(--accent);color:var(--accent-ink);transition:filter .15s;
+  border-radius:999px;padding:13px 18px;border:1px solid transparent;width:100%;
+  background:var(--coral);color:var(--coral-ink);transition:filter .15s;letter-spacing:-.01em;
 }
 .btn:hover{filter:brightness(1.07)}
 .btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
 .btn.quiet{background:transparent;color:var(--muted);border-color:transparent;padding:8px 0;font-size:13px;width:auto;text-align:left}
-.btn.quiet:hover{color:var(--ink)}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.btn.quiet:hover{color:var(--coral)}
+:focus-visible{outline:2px solid var(--coral);outline-offset:2px;border-radius:10px}
 
 /* ---------- cards ---------- */
-.card{border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:9px;background:var(--card)}
-.card.tap{cursor:pointer;text-align:left;width:100%;font-family:inherit;color:inherit}
-.card.tap:hover{border-color:var(--accent)}
+.card{border-radius:20px;padding:17px;display:flex;flex-direction:column;gap:9px;background:var(--card);box-shadow:var(--shadow-sm)}
+.card.tap{cursor:pointer;text-align:left;width:100%;font-family:inherit;color:inherit;border:0;transition:transform .15s,box-shadow .15s}
+.card.tap:hover{transform:translateY(-2px);box-shadow:0 16px 32px -22px rgba(31,27,86,.6)}
 .card-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.who{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.who{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--coral)}
 .mins{font-size:12px;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.card h3{font-family:var(--display);font-weight:500;font-size:20px;line-height:1.2;margin:0}
+.card h3{font-family:var(--display);font-weight:600;font-size:19px;line-height:1.25;margin:0;letter-spacing:-.02em}
 .card p{margin:0;font-size:14px;color:var(--muted)}
 .quote{
-  font-family:var(--display);font-style:italic;font-size:17px;line-height:1.4;
-  margin:0;padding:12px 14px;border-radius:12px;background:var(--accent-soft);color:var(--ink);
+  font-family:var(--display);font-weight:500;font-size:16px;line-height:1.45;
+  margin:0;padding:13px 15px;border-radius:14px;background:var(--coral-soft);
+  color:var(--ink);border-left:3px solid var(--coral);
 }
 .note{font-size:13px;color:var(--muted);margin:0}
-.rule{height:1px;background:var(--line);border:0;margin:2px 0}
+.rule{height:2px;background:var(--coral);border:0;margin:4px 0;width:38px;border-radius:2px;opacity:.5}
 
 /* ---------- kid list / forms ---------- */
 .kidrow{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
 .avatar{
   width:38px;height:38px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
-  font-family:var(--display);font-size:17px;background:var(--teal-soft);color:var(--teal);font-weight:500;
+  font-family:var(--display);font-size:16px;background:var(--coral-soft);color:var(--coral);font-weight:700;
 }
 .kidrow .meta{flex:1;min-width:0}
 .kidrow .meta b{display:block;font-size:15px;font-weight:600}
 .kidrow .meta span{font-size:12.5px;color:var(--muted)}
 .field{display:flex;flex-direction:column;gap:5px}
-.field label{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.field label{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;color:var(--muted)}
 .field input, .field select, textarea{
-  font-family:inherit;font-size:15px;color:var(--ink);background:var(--card);
-  border:1px solid var(--line);border-radius:11px;padding:11px 12px;width:100%;
+  font-family:inherit;font-size:15px;color:var(--ink);background:var(--paper-2);
+  border:1px solid var(--line);border-radius:12px;padding:11px 13px;width:100%;
 }
 textarea{resize:vertical;min-height:76px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .seg button{
   flex:1;appearance:none;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
-  padding:9px 4px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);
+  padding:9px 6px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);
 }
-.seg button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.seg button[aria-pressed="true"]{border-color:var(--coral);color:var(--coral);background:var(--coral-soft)}
 
 /* ---------- timer ---------- */
 .dial{position:relative;width:170px;height:170px;max-width:100%;margin:4px auto 0}
 .dial svg{transform:rotate(-90deg);width:100%;height:100%}
 .dial .track{fill:none;stroke:var(--line);stroke-width:7}
-.dial .arc{fill:none;stroke:var(--accent);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.dial .arc{fill:none;stroke:var(--coral);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1s linear}
 .dial .read{
   position:absolute;inset:0;display:grid;place-content:center;text-align:center;
-  font-family:var(--display);font-size:38px;font-variant-numeric:tabular-nums;letter-spacing:-.02em;
+  font-family:var(--display);font-weight:700;font-size:36px;font-variant-numeric:tabular-nums;letter-spacing:-.04em;
 }
 
 /* ---------- week ---------- */
 .bar{display:flex;align-items:center;gap:10px;font-size:13px}
 .bar .lab{width:56px;flex:0 0 auto;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bar .track{flex:1;height:9px;border-radius:999px;background:var(--line);overflow:hidden;min-width:0}
-.bar .fill{display:block;height:100%;border-radius:999px;background:var(--teal)}
+.bar .track{flex:1;height:10px;border-radius:999px;background:var(--line);overflow:hidden;min-width:0}
+.bar .fill{display:block;height:100%;border-radius:999px;background:var(--coral)}
 .bar .n{width:18px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* ---------- notes column ---------- */
-.notes{display:flex;flex-direction:column;gap:34px;min-width:0}
+.notes{display:flex;flex-direction:column;gap:38px;min-width:0}
 .notes h2{
-  font-family:var(--display);font-weight:500;font-size:24px;margin:0 0 4px;letter-spacing:-.01em;
+  font-family:var(--display);font-weight:700;font-size:25px;margin:0 0 6px;letter-spacing:-.025em;
 }
-.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.steps li{border-top:1px solid var(--line)}
-.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
 .steps button{
-  appearance:none;background:none;border:0;cursor:pointer;font-family:inherit;color:inherit;
-  display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;align-items:baseline;
-  width:100%;text-align:left;padding:13px 2px;
+  appearance:none;background:var(--card);border:0;cursor:pointer;font-family:inherit;color:inherit;
+  display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:baseline;
+  width:100%;text-align:left;padding:14px 18px;border-radius:16px;box-shadow:var(--shadow-sm);
+  transition:transform .15s;
 }
-.steps .num{font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
-.steps .nm{font-size:15px;font-weight:600}
+.steps button:hover{transform:translateX(3px)}
+.steps .num{font-size:12px;font-weight:700;color:var(--coral-tint);font-variant-numeric:tabular-nums}
+.steps .nm{font-size:15px;font-weight:600;letter-spacing:-.01em}
 .steps .bl{display:block;font-size:13.5px;color:var(--muted);font-weight:400;margin-top:2px}
-.steps button[aria-current="true"] .nm{color:var(--accent)}
-.steps button[aria-current="true"] .num{color:var(--accent)}
-.steps button:hover .nm{color:var(--accent)}
+.steps button[aria-current="true"]{background:var(--coral);color:var(--coral-ink)}
+.steps button[aria-current="true"] .num,
+.steps button[aria-current="true"] .bl{color:var(--coral-ink);opacity:.8}
 
-.why{border-left:2px solid var(--accent);padding:2px 0 2px 18px;display:flex;flex-direction:column;gap:10px}
-.why h3{font-family:var(--display);font-weight:500;font-size:20px;margin:0}
+.why{background:var(--card);border-radius:20px;padding:22px 24px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--coral)}
+.why h3{font-family:var(--display);font-weight:700;font-size:20px;margin:0;letter-spacing:-.02em}
 .why p{margin:0;font-size:15px;color:var(--muted);max-width:60ch}
 .why p strong{color:var(--ink);font-weight:600}
 
 .pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-.pair{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--card);min-width:0}
-.pair h4{margin:0 0 6px;font-size:14px;font-weight:700}
+.pair{border-radius:18px;padding:18px;background:var(--card);min-width:0;box-shadow:var(--shadow-sm)}
+.pair h4{margin:0 0 7px;font-size:14px;font-weight:700;letter-spacing:-.01em}
 .pair p{margin:0;font-size:14px;color:var(--muted)}
 .pair strong{color:var(--ink)}
-.pair .x{color:var(--accent);font-weight:700}
+.pair .x{color:var(--coral);font-weight:700}
 
 .sources{font-size:13.5px;color:var(--muted)}
-.sources h2{font-size:18px}
-.sources a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
-.sources a:hover{color:var(--accent)}
+.sources h2{font-size:19px}
+.sources a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.sources a:hover{color:var(--coral)}
 .sources ul{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+
+.colophon{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  font-size:13px;color:var(--muted);padding-top:4px;
+}
+.colophon .chev{width:44px;height:17px;margin:0}
+.colophon a{color:var(--coral);font-weight:600;text-decoration:none}
+.colophon a:hover{text-decoration:underline}
+
 </style>
 </head>
 <body>
 <div class="stage">
 
   <header class="masthead">
-    <span class="kicker">Working prototype</span>
-    <h1>HappyChildren — an app that wants you to <em>close it</em></h1>
-    <p class="standfirst">Most parenting apps are libraries you are meant to study. This one hands you one small thing to do with one specific child today, tells you what to say, and gets out of the way. Tap through it on the left. The case for each screen is on the right.</p>
+    <svg class="chev" viewBox="0 0 120 44" aria-hidden="true"><path d="M10 0h20l-10 44H0z" fill="var(--coral-tint)"/><path d="M48 0h20l-10 44H38z" fill="var(--mid)"/><path d="M86 0h20l-10 44H76z" fill="var(--coral)"/></svg>
+    <span class="kicker">Koli Shema &middot; Working prototype</span>
+    <h1>HappyChildren &mdash; one small thing to do with <em>your child</em> today</h1>
+    <p class="standfirst">This is a parenting app for parents who don&rsquo;t have time to be taught parenting. It gives you one thing to try with one of your children, something to say to open it, and then it closes. About forty seconds a day. You can tap through it on the left. What each screen is for is on the right.</p>
     <div class="flags">
-      <span class="flag">Ages 0–17</span>
+      <span class="flag">Ages 0&ndash;17</span>
       <span class="flag">No streaks</span>
-      <span class="flag">~40 seconds a day</span>
+      <span class="flag">About 40 seconds a day</span>
       <span class="flag">Open source</span>
     </div>
   </header>
 
   <div class="workbench">
 
-    <!-- ============ DEVICE ============ -->
     <div class="device">
       <div class="phone">
         <div class="statusbar"><span>7:12</span><span>HappyChildren</span><span>100%</span></div>
         <div class="viewport" id="viewport">
 
-          <!-- 1. WELCOME -->
           <section class="screen" id="sc-welcome" hidden>
             <p class="eyebrow">First open</p>
             <h2 class="s-title">Who are you doing this for?</h2>
-            <p class="s-sub">Tell me their names and ages. Everything after this is built around them, not around parenting in general.</p>
+            <p class="s-sub">Tell me their names and ages. Everything after this is built around them rather than around parenting in general.</p>
             <div class="card">
-              <p class="body-sm">This app will ask you for about forty seconds a day. If it ever asks for more, delete it.</p>
+              <p class="body-sm">This will ask you for about forty seconds a day. If it ever starts asking for more, delete it.</p>
             </div>
             <button class="btn" data-go="kids">Add my children</button>
-            <button class="btn ghost" data-go="today">Skip — show me an example family</button>
+            <button class="btn ghost" data-go="today">Skip &mdash; show me an example family</button>
           </section>
 
-          <!-- 2. KIDS -->
           <section class="screen" id="sc-kids" hidden>
             <p class="eyebrow">Your children</p>
             <h2 class="s-title">Add a child</h2>
             <div id="kidlist"></div>
             <div class="field"><label for="k-name">Name</label><input id="k-name" placeholder="What you actually call them"></div>
             <div class="row2">
-              <div class="field"><label for="k-age">Age</label><input id="k-age" type="number" min="0" max="17" placeholder="0–17"></div>
+              <div class="field"><label for="k-age">Age</label><input id="k-age" type="number" min="0" max="17" placeholder="0&ndash;17"></div>
               <div class="field"><label for="k-g">Pronouns</label>
                 <select id="k-g">
                   <option value="n">they / them</option>
@@ -288,40 +306,37 @@ textarea{resize:vertical;min-height:76px}
               </div>
             </div>
             <button class="btn" id="addKid">Add</button>
-            <p class="note">Age decides what the app suggests — a four-year-old and a fourteen-year-old need opposite things from you. Pronouns only change the wording. Nothing else differs by gender, because nothing in the research says it should.</p>
+            <p class="note">Age is what changes the suggestions. A four-year-old and a fourteen-year-old need close to opposite things from you. Pronouns only change the wording. Nothing else is different by gender, because there is nothing in the research saying it should be.</p>
             <button class="btn ghost" data-go="today">Done</button>
           </section>
 
-          <!-- 3. TODAY -->
           <section class="screen" id="sc-today" hidden>
             <p class="eyebrow">Monday evening</p>
             <h2 class="s-title">One thing each</h2>
             <div id="todayCards"></div>
-            <button class="btn quiet" id="shuffle">Give me different ones →</button>
+            <button class="btn quiet" id="shuffle">Give me different ones &rarr;</button>
             <hr class="rule">
             <p class="eyebrow">Noticed</p>
-            <p class="note">One line about something they did. They get to read these one day.</p>
+            <p class="note">One line about something your child did. They get to read these later.</p>
             <button class="btn ghost" data-go="noticed">Write one</button>
           </section>
 
-          <!-- 4. MOMENT -->
           <section class="screen" id="sc-moment" hidden>
-            <button class="btn quiet" data-go="today">← Today</button>
+            <button class="btn quiet" data-go="today">&larr; Today</button>
             <p class="eyebrow" id="m-who">For Mira, 4</p>
             <h2 class="s-title" id="m-title">Five minutes, their rules</h2>
             <p class="mins" id="m-mins">5 minutes</p>
             <p class="body-sm" id="m-body"></p>
-            <p class="eyebrow">Say something like</p>
+            <p class="eyebrow">Something to open with</p>
             <p class="quote" id="m-say"></p>
             <div class="card">
-              <p class="eyebrow">Why this works</p>
+              <p class="eyebrow">Why it works</p>
               <p class="body-sm" id="m-why"></p>
             </div>
-            <button class="btn" data-go="presence">Start — put my phone down</button>
+            <button class="btn" data-go="presence">Start &mdash; put my phone down</button>
             <button class="btn ghost" data-go="today">Not now</button>
           </section>
 
-          <!-- 5. PRESENCE -->
           <section class="screen" id="sc-presence" hidden>
             <p class="eyebrow">Phone down</p>
             <h2 class="s-title" id="p-title">Five minutes, their rules</h2>
@@ -334,20 +349,18 @@ textarea{resize:vertical;min-height:76px}
             </div>
             <p class="s-sub" style="text-align:center">Nothing will buzz. Calls still come through.</p>
             <p class="quote" id="p-say"></p>
-            <button class="btn" id="endEarly">I'm back</button>
+            <button class="btn" id="endEarly">I&rsquo;m back</button>
           </section>
 
-          <!-- 6. SAY IT -->
           <section class="screen" id="sc-say" hidden>
             <p class="eyebrow">Say it</p>
-            <h2 class="s-title">For the moment you're in</h2>
-            <p class="s-sub">Not scripts to memorise. Something to borrow when your own words have run out.</p>
+            <h2 class="s-title">For the moment you&rsquo;re in</h2>
+            <p class="s-sub">You don&rsquo;t have to memorize any of this. It&rsquo;s here for the nights when you know what you want to say and the words won&rsquo;t come.</p>
             <div id="scriptList"></div>
           </section>
 
-          <!-- 7. NOTICED -->
           <section class="screen" id="sc-noticed" hidden>
-            <button class="btn quiet" data-go="today">← Today</button>
+            <button class="btn quiet" data-go="today">&larr; Today</button>
             <p class="eyebrow">Noticed</p>
             <h2 class="s-title">What did you see?</h2>
             <div class="field"><label for="n-kid">Who</label><select id="n-kid"></select></div>
@@ -357,13 +370,12 @@ textarea{resize:vertical;min-height:76px}
             <div id="noticedList"></div>
           </section>
 
-          <!-- 8. CHILD -->
           <section class="screen" id="sc-child" hidden>
             <p class="eyebrow">Your children</p>
             <h2 class="s-title" id="c-title">Mira, 4</h2>
             <div id="kidSwitch" class="seg"></div>
             <div class="card">
-              <p class="eyebrow" id="c-band">Ages 3–5</p>
+              <p class="eyebrow" id="c-band">Ages 3&ndash;5</p>
               <h3 id="c-headline">Let them lead</h3>
               <p id="c-need"></p>
             </div>
@@ -373,10 +385,9 @@ textarea{resize:vertical;min-height:76px}
             <div id="c-noticed"></div>
           </section>
 
-          <!-- 9. WEEK -->
           <section class="screen" id="sc-week" hidden>
             <p class="eyebrow">Sunday night</p>
-            <h2 class="s-title">Your week, without the scoreboard</h2>
+            <h2 class="s-title">Your week, with no scoreboard</h2>
             <div class="card">
               <div id="weekBars" style="display:flex;flex-direction:column;gap:10px"></div>
             </div>
@@ -384,7 +395,7 @@ textarea{resize:vertical;min-height:76px}
               <p class="eyebrow">The one thing worth saying</p>
               <p class="body-sm" id="weekLine"></p>
             </div>
-            <p class="note">No streak. No percentage. No comparison to other families. A week you mostly missed gets the same tone as a week you didn't — a parent who feels judged by an app deletes the app.</p>
+            <p class="note">There is no streak, no percentage, and nothing comparing you to other families. A week you mostly missed looks the same here as a week you didn&rsquo;t.</p>
             <button class="btn ghost" data-go="today">Back to today</button>
           </section>
 
@@ -396,15 +407,14 @@ textarea{resize:vertical;min-height:76px}
           <button data-go="week"><span class="dot"></span>Week</button>
         </nav>
       </div>
-      <p class="devicecaption">Loaded with an example family — Mira, 4 and Eli, 11. Add your own on screen 2 and every other screen rewrites around them.</p>
+      <p class="devicecaption">Loaded with an example family, Mira who is 4 and Eli who is 11. Add your own on screen 2 and the rest of it rewrites around them.</p>
     </div>
 
-    <!-- ============ NOTES ============ -->
     <div class="notes">
 
       <div>
         <h2>The nine screens</h2>
-        <p class="note" style="margin-bottom:10px">Tap one to jump the phone to it. This list is the feature set.</p>
+        <p class="note" style="margin-bottom:12px">Tap one to jump the phone to it. This list is the feature set.</p>
         <ul class="steps" id="steps"></ul>
       </div>
 
@@ -415,68 +425,72 @@ textarea{resize:vertical;min-height:76px}
 
       <div>
         <h2>What the research actually supports</h2>
-        <div class="pairs" style="margin-top:14px">
+        <div class="pairs" style="margin-top:16px">
           <div class="pair">
-            <h4>Back-and-forth, not input</h4>
-            <p>Harvard's Center on the Developing Child calls it <strong>serve and return</strong>: a child reaches out, an adult responds, and that exchange builds brain architecture. The response is the active ingredient — which is why every moment in the app ends with waiting rather than talking.</p>
+            <h4>Back and forth, not input</h4>
+            <p>Harvard&rsquo;s Center on the Developing Child calls it <strong>serve and return</strong>. Your child reaches out, you answer, and that exchange is what builds the architecture. The answering is the active part, which is why every suggestion in here ends with you waiting instead of talking.</p>
           </div>
           <div class="pair">
-            <h4>The phone is the competition</h4>
-            <p>"Technoference" research links parents' interrupted attention to more acting out, more anxiety and weaker executive function in children. In a UK survey of over 2,000 pupils, <strong>32% said they feel unimportant</strong> when a parent is distracted by a phone — while only 10% of parents thought their phone use upset their kids.</p>
+            <h4>The phone is what you&rsquo;re competing with</h4>
+            <p>Research on technoference links a parent&rsquo;s interrupted attention to more acting out, more anxiety and weaker executive function. In a UK survey of over 2,000 students, <strong>32% said they feel unimportant</strong> when a parent gets distracted by a phone. Only 10% of parents thought their phone use bothered their kids at all.</p>
           </div>
           <div class="pair">
             <h4>Five minutes, child-led</h4>
-            <p>Parent-Child Interaction Therapy builds its entire first phase on five minutes a day of play the child leads, with the parent praising, reflecting, imitating, describing — and not questioning or correcting. It is the best-evidenced small unit of parenting time there is.</p>
+            <p>Parent-Child Interaction Therapy puts five minutes a day of play the child leads at the center of its first phase, with the parent praising, reflecting, imitating and describing, and not questioning or correcting. It is the best-evidenced small piece of parenting time there is.</p>
           </div>
           <div class="pair">
-            <h4>Ratio over intensity</h4>
-            <p>Gottman's 5:1 principle — five positive exchanges for every corrective one — is why this app counts small moments instead of scheduling big ones. A hug and a noticed effort are units. A planned day out is not.</p>
+            <h4>Ratio, not intensity</h4>
+            <p>Gottman&rsquo;s 5:1 &mdash; five positive exchanges for every corrective one &mdash; is why this counts small moments rather than scheduling big ones. A hug counts and a noticed effort counts. A planned day out is one thing that happened in a month.</p>
           </div>
           <div class="pair">
             <h4>Repair is the skill</h4>
-            <p>Secure attachment doesn't come from never rupturing. Dan Siegel's four S's — safe, seen, soothed, secure — put reconnection after conflict at the centre. So the app treats "you lost your temper" as a normal Tuesday with a script attached, not a failure state.</p>
+            <p>Secure attachment doesn&rsquo;t come from never losing it. Dan Siegel&rsquo;s four S&rsquo;s &mdash; safe, seen, soothed, secure &mdash; put getting back together after a fight at the center of it. So a bad night is treated here as an ordinary one with something to say afterward.</p>
           </div>
           <div class="pair">
-            <h4>Engagement is the real problem</h4>
-            <p>In a large trial of a twelve-module digital parenting programme, 97% finished module one and <strong>8% finished all twelve</strong>. Across smartphone interventions generally, completion runs as low as 0.5%. Any feature that assumes a parent will work through a curriculum is a feature that won't get used.</p>
+            <h4>Getting people to keep using it is the real problem</h4>
+            <p>In a large trial of a digital parenting program, 97% of caregivers finished the first module and <strong>8% finished all twelve</strong>. Across smartphone interventions generally, completion runs as low as 0.5%. Any feature that assumes a parent will work through a curriculum is a feature nobody will use.</p>
           </div>
         </div>
       </div>
 
       <div>
-        <h2>What it deliberately doesn't do</h2>
-        <div class="pairs" style="margin-top:14px">
-          <div class="pair"><h4><span class="x">×</span> Streaks and badges</h4><p>A broken streak on a parenting app reads as "you failed your child." Guilt drives uninstalls, and the parents who need this most are the ones having the worst weeks.</p></div>
-          <div class="pair"><h4><span class="x">×</span> A content library</h4><p>Articles, courses and modules are where parenting apps go to die. One card a day, or nothing.</p></div>
-          <div class="pair"><h4><span class="x">×</span> Child accounts or monitoring</h4><p>No child logs in and no child is tracked. That keeps children's data out of the system and COPPA off the critical path — the 2025 rules tightened third-party consent, retention and vendor liability, and the cheapest compliance is collecting nothing.</p></div>
-          <div class="pair"><h4><span class="x">×</span> Screen-time shaming</h4><p>Tracking dashboards mostly get dismissed; friction and blocking change behaviour. The app blocks the phone for five named minutes with a child's name on it, which is a reason rather than a scold.</p></div>
-          <div class="pair"><h4><span class="x">×</span> An AI chat companion</h4><p>Routing a parent's description of their child into a model is the riskiest thing this app could do, and it swaps the thing that works — the parent talking to the child — for the parent talking to a phone.</p></div>
-          <div class="pair"><h4><span class="x">×</span> A fixed daily reminder</h4><p>7pm is bathtime in some houses and bedtime in others. The prompt arrives once, inside a window the parent sets, and never twice.</p></div>
+        <h2>What it deliberately doesn&rsquo;t do</h2>
+        <div class="pairs" style="margin-top:16px">
+          <div class="pair"><h4><span class="x">&times;</span> Streaks and badges</h4><p>A broken streak on a parenting app says you failed your child. Guilt gets apps deleted, and the parents having the worst month are the ones it lands on.</p></div>
+          <div class="pair"><h4><span class="x">&times;</span> A content library</h4><p>Articles, courses and modules are what most parenting apps fill up with, and they are what people stop opening. One card a day, or nothing.</p></div>
+          <div class="pair"><h4><span class="x">&times;</span> Child accounts or monitoring</h4><p>No child signs in and no child is tracked. That keeps children&rsquo;s data out of this entirely, and it keeps COPPA off the critical path. The 2025 rules tightened consent, retention and vendor liability, and collecting nothing is the cheapest way to comply.</p></div>
+          <div class="pair"><h4><span class="x">&times;</span> Screen-time shaming</h4><p>Tracking dashboards mostly get swiped away. This blocks the phone for a few minutes with one of your children&rsquo;s names on it, which is a reason to put it down.</p></div>
+          <div class="pair"><h4><span class="x">&times;</span> An AI chat companion</h4><p>Sending a description of your child to a model is the riskiest thing this could do. It also swaps the thing that works, which is you talking to your child, for you talking to a phone.</p></div>
+          <div class="pair"><h4><span class="x">&times;</span> A fixed daily reminder</h4><p>Seven at night is bath time in some houses and bedtime in others. The prompt comes once, inside a window you set, and it doesn&rsquo;t come again.</p></div>
         </div>
       </div>
 
       <div>
         <h2>If you build it, build this first</h2>
-        <div class="pairs" style="margin-top:14px">
-          <div class="pair"><h4>Version one</h4><p>Screens 2, 3, 4 and 6 — add children, one card each per day, the moment detail, and the eight scripts. All content ships inside the app; no server, no account, no login. Two to three weeks of one developer's time.</p></div>
-          <div class="pair"><h4>Version two</h4><p>Noticed (7) and the child profile (8). This is where retention comes from, and the first thing worth asking people to pay for.</p></div>
-          <div class="pair"><h4>The honest risk</h4><p>Parenting apps are a graveyard. The two things that decide this one are whether the daily card is good enough that parents screenshot it, and whether the app is genuinely closable in forty seconds. Test both with twenty parents before writing the second screen.</p></div>
+        <div class="pairs" style="margin-top:16px">
+          <div class="pair"><h4>Version one</h4><p>Screens 2, 3, 4 and 6 &mdash; add your children, one card each per day, the moment itself, and the eight lines. All the content ships inside the app, so there is no server, no account and no login. Two or three weeks for one developer.</p></div>
+          <div class="pair"><h4>Version two</h4><p>Noticed, and the child profile. That is where people coming back comes from, and it is the first part worth asking anyone to pay for.</p></div>
+          <div class="pair"><h4>The honest part</h4><p>Parenting apps mostly fail, and not on the product. Two things decide this one: whether the daily card is good enough that a parent screenshots it, and whether the app really can be closed in forty seconds. Both are worth testing with twenty parents before anybody writes a second screen.</p></div>
         </div>
       </div>
 
       <div class="sources">
         <h2>Where this came from</h2>
         <ul>
-          <li><a href="https://developingchild.harvard.edu/key-concept/serve-and-return/">Serve and return — Center on the Developing Child, Harvard</a></li>
-          <li><a href="https://www.zerotothree.org/resource/journal/technoference-parent-mobile-device-use-and-implications-for-children-and-parent-child-relationships/">Technoference and parent–child relationships — ZERO TO THREE</a></li>
+          <li><a href="https://developingchild.harvard.edu/key-concept/serve-and-return/">Serve and return &mdash; Center on the Developing Child, Harvard</a></li>
+          <li><a href="https://www.zerotothree.org/resource/journal/technoference-parent-mobile-device-use-and-implications-for-children-and-parent-child-relationships/">Technoference and parent&ndash;child relationships &mdash; ZERO TO THREE</a></li>
           <li><a href="https://www.geekwire.com/2015/study-shows-a-third-of-kids-feel-unimportant-when-parents-are-on-smartphones/">A third of kids feel unimportant when parents are on their phones</a></li>
           <li><a href="https://csa.virginia.gov/Content/doc/What_is-PCIT_2022.pdf">Parent-Child Interaction Therapy and the PRIDE skills</a></li>
-          <li><a href="https://greatergood.berkeley.edu/article/item/getting_the_ratios_right">Getting the ratios right — Greater Good, UC Berkeley</a></li>
-          <li><a href="https://psychcentral.com/relationships/the-4-ss-secure-attachment">Dan Siegel's four S's of secure attachment</a></li>
-          <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11933756/">Engagement and drop-off in a digital parenting app — cluster randomised trial</a></li>
-          <li><a href="https://www.search-institute.org/what-we-study/developmental-relationships">Developmental Relationships Framework — Search Institute</a></li>
-          <li><a href="https://mhealth.jmir.org/2026/1/e56824">Self-regulated smartphone use with a mobile intervention app — RCT</a></li>
+          <li><a href="https://greatergood.berkeley.edu/article/item/getting_the_ratios_right">Getting the ratios right &mdash; Greater Good, UC Berkeley</a></li>
+          <li><a href="https://psychcentral.com/relationships/the-4-ss-secure-attachment">Dan Siegel&rsquo;s four S&rsquo;s of secure attachment</a></li>
+          <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC11933756/">Engagement and drop-off in a digital parenting app &mdash; cluster randomized trial</a></li>
+          <li><a href="https://www.search-institute.org/what-we-study/developmental-relationships">Developmental Relationships Framework &mdash; Search Institute</a></li>
         </ul>
+      </div>
+
+      <div class="colophon">
+        <svg class="chev" viewBox="0 0 120 44" aria-hidden="true"><path d="M10 0h20l-10 44H0z" fill="var(--coral-tint)"/><path d="M48 0h20l-10 44H38z" fill="var(--mid)"/><path d="M86 0h20l-10 44H76z" fill="var(--coral)"/></svg>
+        <span>Built for Koli Shema &mdash; <a href="https://kolishema.org">kolishema.org</a>. Source on <a href="https://github.com/KoliShema/HappyChildren">GitHub</a>.</span>
       </div>
 
     </div>
@@ -487,117 +501,117 @@ textarea{resize:vertical;min-height:76px}
 /* ---------------- data ---------------- */
 var BANDS = [
   { id:'b1', max:2, label:'Ages 0–2', headline:'Answer their face',
-    need:'Presence is literal now. {Name} sends something out — a look, a noise, a grab — and needs it sent back. That exchange, hundreds of times a day, is the whole job.',
+    need:'Right now being there is literal. {Name} sends something out — a look, a noise, a grab at your sleeve — and needs it sent back. Hundreds of times a day. That is most of the job at this age.',
     moments:[
       { t:'Follow their eyes', m:2,
-        body:'Watch what {name} is looking at. Name it out loud. Then wait — actually wait, three or four seconds — for a sound or a look back. Go five rounds.',
+        body:'Watch what {name} is looking at and say what it is out loud. Then wait. Three or four seconds, even if nothing is coming. Go back and forth about five times.',
         say:'You see the dog. Big dog… yeah? A big one.',
-        why:'The waiting is the part people skip. The return matters more than the serve.' },
-      { t:'Narrate the boring part', m:3,
-        body:'Nappy change, dishes, unpacking the shopping. Say what your hands are doing while you do it. {Name} is not bored by this.',
-        say:'Cold water first. Now the soap. Look at all that.',
-        why:'Most early language comes out of dull routines, not out of special activities.' },
-      { t:'Stop before you fix', m:1,
+        why:'The waiting is the part most people skip.' },
+      { t:'Say what you’re doing', m:3,
+        body:'Diaper change, dishes, putting the groceries away. Say what your hands are doing while you do it. {Name} is not bored by any of it.',
+        say:'Cold water first. Now the soap. Look at that.',
+        why:'Most of the early language comes out of ordinary routines rather than out of special activities.' },
+      { t:'Stop before you fix it', m:1,
         body:'Next time {name} fusses, put down whatever you were about to hand over and look at {their} face for three seconds first.',
-        say:'Nothing. Just look.',
-        why:'Being read feels different from being handled, even at this age.' }
+        say:'Nothing. You can just look.',
+        why:'Being read is different from being handled, even at this age.' }
     ]},
   { id:'b2', max:5, label:'Ages 3–5', headline:'Let them lead',
-    need:'{Name} is testing what happens when {they} decide. The most useful five minutes of your day are the ones where you have no agenda at all.',
+    need:'{Name} is finding out what happens when {they} get to decide. The most useful five minutes of your day can be the five where you have no plan for {them} at all.',
     moments:[
       { t:'Five minutes, their rules', m:5,
-        body:'{Name} picks. You follow. No questions, no corrections, no teaching, no “what colour is that?” You only describe what you see them doing.',
+        body:'{Name} picks what you do and you follow. No questions, no corrections, no teaching, and no “what color is that?” You can just describe what you see {them} doing.',
         say:'You put the blue one right on top. Now you’re lining them all up.',
-        why:'Lifted straight from the first phase of Parent-Child Interaction Therapy, where it is the treatment itself, not a warm-up.' },
+        why:'This is the first phase of Parent-Child Interaction Therapy, where five minutes a day is the treatment itself.' },
       { t:'Say what you saw', m:1,
-        body:'Catch yourself before “good job” and describe the thing instead.',
+        body:'Catch yourself before “good job” and describe what actually happened instead.',
         say:'It fell over twice and you built it again.',
-        why:'Describing tells a child what you were paying attention to. “Good job” only tells them you approve.' },
+        why:'Describing tells your child what you were paying attention to. “Good job” only tells them you approved.' },
       { t:'Name it before you fix it', m:2,
-        body:'At the next meltdown, say the feeling out loud and then stop talking. Don’t explain, don’t solve, don’t say “it’s not a big deal.”',
+        body:'At the next meltdown, say the feeling out loud and then stop. You don’t have to explain it or solve it, and you don’t have to tell {them} it isn’t a big deal.',
         say:'You really wanted the blue cup. You’re so mad about it.',
-        why:'Naming a feeling takes the heat out of it. Arguing with the feeling adds to it.' }
+        why:'Naming a feeling usually takes some of the heat out of it. Arguing with it usually adds some.' }
     ]},
   { id:'b3', max:9, label:'Ages 6–9', headline:'Ask past the first answer',
-    need:'{Name} will tell you “fine” about a day that was not fine. Getting past that takes a better question and a parent who isn’t also doing something else.',
+    need:'{Name} will tell you “fine” about a day that was not fine. Getting past that takes a better question, and it takes you not doing something else at the same time.',
     moments:[
       { t:'The worst part too', m:3,
-        body:'Ask about the best part of the day. Then ask about the worst part, in the same tone, like it’s a normal thing to ask.',
-        say:'What was the worst bit of today?',
-        why:'If you only ever ask for the good news, that’s the only news you get told later, when it matters more.' },
+        body:'Ask about the best part of the day. Then ask about the worst part, in the same voice, like it is a normal thing to ask about.',
+        say:'What was the worst part of today?',
+        why:'If you only ever ask for the good news, that is the only news you get told later on, when it matters more.' },
       { t:'Ten minutes, door shut', m:10,
-        body:'Just {name}, with the other kids out of the room. It doesn’t need an activity. It needs the absence of everyone else.',
+        body:'Just {name}, with the other kids out of the room. It doesn’t need an activity. What it needs is everybody else not being there.',
         say:'I’m not sharing you for the next ten minutes.',
-        why:'In a house with more than one child, undivided attention is the scarce resource, not time.' },
-      { t:'Notice the effort out loud', m:1,
-        body:'Say one true thing you saw {name} try today — not achieve, try.',
-        say:'You kept going at that for ages. I saw.',
-        why:'Effort you name is effort they repeat.' }
+        why:'In a house with more than one child, undivided attention runs out before time does.' },
+      { t:'Say the effort out loud', m:1,
+        body:'Say one true thing you saw {name} try today — not something {they} finished, just something {they} tried.',
+        say:'You kept going at that for a long time. I saw.',
+        why:'Effort you say out loud is effort they will do again.' }
     ]},
   { id:'b4', max:12, label:'Ages 10–12', headline:'Side by side',
-    need:'{Name} is starting to manage what you know. Pressure closes the door. Proximity with no agenda opens it.',
+    need:'{Name} is starting to manage what you know about {their} life. Pressure closes that down. Being near {them} with nothing in particular to say can open it.',
     moments:[
       { t:'Shoulder to shoulder', m:12,
-        body:'Car, washing up, a walk to the shop. Talk while you’re both facing something else. Don’t turn and look at {them}.',
+        body:'In the car, at the sink, or even just walking to the store. Talk while you are both facing something else, and don’t turn and look at {them}.',
         say:'Anything new with that group chat thing?',
-        why:'Eye contact raises the stakes at this age. A windscreen lowers them.' },
+        why:'Looking right at them raises the stakes at this age. Sitting next to them lowers it.' },
       { t:'Be bored in the same room', m:10,
-        body:'Go where {name} is and do nothing in particular. Don’t bring a topic. Don’t bring your phone.',
+        body:'Go where {name} is and do nothing in particular. You don’t need a topic, and you can leave your phone somewhere else.',
         say:'Nothing. You’re just there.',
-        why:'At this age the openings come unannounced, and only to a parent already in the room.' },
+        why:'At this age what they tell you comes out without warning, and only when you are already in the room.' },
       { t:'Ask about their world', m:4,
-        body:'Not “how was school.” Ask about the specific thing {name} actually cares about — the game, the song, the drama between friends — and let them explain it to you badly.',
+        body:'Not how school was. Ask about the thing {name} actually cares about — the game, the song, or who isn’t talking to who — and let {them} explain it to you badly.',
         say:'Explain that thing you were telling me about. I didn’t get it.',
-        why:'Being the expert in a conversation with a parent is rare, and they’ll take it every time.' }
+        why:'Getting to be the one who knows more than you is rare at this age, and they will usually take it.' }
     ]},
   { id:'b5', max:17, label:'Ages 13–17', headline:'Be reachable',
-    need:'{Name} needs you less and still needs you absolutely. The job shifts from activity to availability — being awake, being calm, being the one who goes first after a fight.',
+    need:'{Name} needs you less and still needs you completely. The job moves from doing things with {them} to being available — awake, calm, and the one who goes first after a fight.',
     moments:[
       { t:'Listen or ideas?', m:3,
-        body:'When {name} brings you a problem, ask which one they want before you start helping.',
+        body:'When {name} brings you a problem, you can ask which one {they} want before you start helping.',
         say:'Do you want me to just listen, or do you want ideas?',
-        why:'Most arguments about advice are really arguments about consent to be advised.' },
+        why:'Most of the fights about advice are really about not being asked first.' },
       { t:'Be up when they get in', m:15,
-        body:'Stay up. Don’t interrogate. Make a drink, say one ordinary thing, go to bed.',
+        body:'Stay up. You don’t have to ask {them} anything. Make a drink, say one ordinary thing, go to bed.',
         say:'There’s food if you want it. Night.',
-        why:'Teenagers talk on their schedule, not yours, and almost always late.' },
+        why:'Teenagers talk on their own schedule, and it is usually late.' },
       { t:'You go first', m:5,
-        body:'After the last argument, go back and name your part of it, with no “but” on the end.',
-        say:'I shouldn’t have shouted at you. That was mine, not yours.',
-        why:'Repair after rupture is what builds security — not the absence of rupture.' }
+        body:'After the last fight, go back and say your part of it out loud, with no “but” on the end.',
+        say:'I shouldn’t have yelled at you. That one was mine, not yours.',
+        why:'What builds security is the repair, not never having the fight.' }
     ]}
 ];
 
 var SCRIPTS = [
-  { k:'They’re melting down', s:'You really wanted that. You’re so mad.', n:'Then stop. Don’t add “but” and don’t add “it’s not a big deal.”' },
-  { k:'You lost your temper', s:'I shouldn’t have shouted. That wasn’t okay, and it wasn’t your fault.', n:'Nothing after it. The moment you add “but you were…” it stops being an apology.' },
-  { k:'Instead of “good job”', s:'It fell over twice and you built it again.', n:'Describe what you actually saw. It lands harder and it’s harder to fake.' },
-  { k:'They told you something hard', s:'Thank you for telling me. I’m glad you did.', n:'Say that before you react to the content. Your face in the next two seconds decides whether they tell you the next thing.' },
-  { k:'They won’t talk', s:'You don’t have to talk about it. I’ll be in the kitchen.', n:'Leave the door open and walk away from it. Pressure closes it for a week.' },
-  { k:'You’re leaving', s:'I’m going to work. I’ll be back before dinner.', n:'Name the return, not the leaving. Never sneak out — it costs you more later.' },
-  { k:'Before you give advice', s:'Do you want me to listen, or do you want ideas?', n:'Works from about eight upwards. Works on adults too.' },
-  { k:'They did something you’re angry about', s:'I’m angry about what happened. I’m not done with you.', n:'Separate the act from the relationship, out loud, in the same breath.' }
+  { k:'They’re melting down', s:'You really wanted that. You’re so mad.', n:'Then stop. You don’t have to add “but,” and you don’t have to tell them it isn’t a big deal.' },
+  { k:'You lost your temper', s:'I shouldn’t have yelled. That wasn’t okay, and it wasn’t your fault.', n:'Nothing after it. The second you add “but you were…” it stops being an apology.' },
+  { k:'Instead of “good job”', s:'It fell over twice and you built it again.', n:'Say what you actually saw. It is harder to fake, and they can tell the difference.' },
+  { k:'They told you something hard', s:'Thank you for telling me. I’m glad you did.', n:'Say that before you react to what they told you. Your face in the next two seconds decides whether you hear the next thing.' },
+  { k:'They won’t talk', s:'You don’t have to talk about it. I’ll be in the kitchen.', n:'Then actually go to the kitchen. Pushing it closes the door for about a week.' },
+  { k:'You’re leaving', s:'I’m going to work. I’ll be back before dinner.', n:'Say when you’re coming back rather than that you’re going. And don’t sneak out, it costs more later.' },
+  { k:'Before you give advice', s:'Do you want me to listen, or do you want ideas?', n:'Works from about eight up. Works on adults too.' },
+  { k:'They did something you’re angry about', s:'I’m angry about what happened. I’m not done with you.', n:'Both parts, in the same breath.' }
 ];
 
 var SCREENS = [
-  { id:'welcome', nm:'Welcome', bl:'Names first, philosophy never',
-    why:'<strong>No value proposition, no carousel, no account.</strong> The first screen asks for children’s names, because every screen after it is built around a specific child rather than around parenting in general. The second line — if it ever asks for more than forty seconds, delete it — is a promise the whole product has to keep, and it tells the parent straight away that this is not somewhere to spend time.' },
-  { id:'kids', nm:'Your children', bl:'Name, age, pronouns — nothing else',
-    why:'<strong>Age is the only input that changes the content, and it changes it completely.</strong> A four-year-old needs you to follow their lead on the floor; a fourteen-year-old needs you awake at eleven at night. Most parenting apps pick one age band and then lose the family as the children grow. Pronouns only affect wording. Collect nothing else: no school, no diagnosis, no photo, no date of birth. Every extra field is a privacy liability and a place to drop off.' },
-  { id:'today', nm:'Today', bl:'One card per child, and that’s the whole app',
-    why:'<strong>This is the screen that has to survive contact with a real evening.</strong> One suggestion per child, costed honestly in minutes, and a way to swap it when it doesn’t fit. No feed, no backlog, no yesterday’s undone items. In a large trial of a twelve-module digital parenting programme, 97% of caregivers finished module one and 8% finished all twelve — anything that looks like a curriculum goes unused, so there is nothing here to fall behind on.' },
-  { id:'moment', nm:'A moment', bl:'What to do, what to say, why it works',
-    why:'<strong>Parents don’t fail at wanting to connect. They fail at the first sentence.</strong> So each moment hands over the opening line, not just the instruction. The reasoning sits underneath rather than on top — there for the parent who wants it, skippable for the parent standing in a kitchen with ninety seconds. The duration is stated up front and never rounded up.' },
-  { id:'presence', nm:'Phone down', bl:'A block with a child’s name on it',
-    why:'<strong>The honest problem with this app is that it lives on the thing it competes with.</strong> Generic screen-time dashboards mostly get dismissed; friction and blocking do change behaviour. So the block here is short, voluntary and attached to a named child and a named activity — five minutes with Mira, not “reduce usage.” Calls still come through, because a parent who misses one school call will never open it again.' },
-  { id:'say', nm:'Say it', bl:'Eight sentences for the eight hard moments',
-    why:'<strong>This is the feature people will open on their own.</strong> Not a library — eight situations, one borrowed sentence each, plus the thing not to add afterwards. The apology script matters most: Dan Siegel’s four S’s put repair after rupture at the centre of secure attachment, so the app treats losing your temper as a normal Tuesday with a script attached rather than a failure state.' },
-  { id:'noticed', nm:'Noticed', bl:'One line a day, kept for the child',
-    why:'<strong>The retention mechanic, in place of streaks.</strong> A parent writes one line about something their child did, and it accumulates into something the child can be given at sixteen. It brings people back without guilt, it makes the stored data worth keeping, and it quietly trains the noticing habit that Gottman’s 5:1 ratio depends on. Nothing is scored and no gap is ever shown.' },
-  { id:'child', nm:'Child profile', bl:'What this child needs, at this age',
-    why:'<strong>The reference screen, for the parent who wants to understand rather than be told.</strong> It explains the developmental band in plain words, lists the three moments that fit it, and shows what you’ve noticed about this child. When a birthday moves a child into a new band, this screen changes and the app says so — which is the moment a parent remembers it exists.' },
-  { id:'week', nm:'This week', bl:'Balance between children, not a score',
-    why:'<strong>The only metric worth showing a parent is the one they can’t see themselves: which child got less of them.</strong> No percentage, no streak, no comparison with other families. A bad week gets the same tone as a good one. The single written line is the whole feature — if it ever reads like a report card, the parents in the hardest weeks, who need this most, will delete the app.' }
+  { id:'welcome', nm:'Welcome', bl:'Names first, no pitch',
+    why:'<strong>No sign-up, no slideshow, no explaining itself.</strong> The first screen asks for your children’s names, because every screen after it is built around one of them rather than around parenting in general. The line underneath it — about forty seconds a day, and delete it if it starts asking for more — is a promise the rest of the app has to keep.' },
+  { id:'kids', nm:'Your children', bl:'Name, age, pronouns, nothing else',
+    why:'<strong>Age is the one thing you enter that changes what the app says, and it changes all of it.</strong> A four-year-old needs you down on the floor following their lead. A fourteen-year-old needs you awake at eleven at night. Most parenting apps pick one age and then lose the family as the kids get older. Pronouns only change the wording. Nothing else gets collected — no school, no diagnosis, no photo, no birthday — partly because every extra field is somewhere to quit, and partly because children’s data is the last thing this should be holding.' },
+  { id:'today', nm:'Today', bl:'One card per child, and that is the app',
+    why:'<strong>This is the screen that has to work on a normal weeknight.</strong> One suggestion per child, with the real number of minutes on it, and a way to swap it out when it doesn’t fit your night. No feed, no backlog, and nothing left over from yesterday. In one large trial of a twelve-module parenting program, 97% of caregivers finished the first module and 8% finished all twelve. So there is nothing here to fall behind on.' },
+  { id:'moment', nm:'A moment', bl:'What to do, what to open with, why',
+    why:'<strong>Most parents don’t have trouble wanting to connect. They have trouble with the first sentence.</strong> So every one of these gives you something to open with and not only something to do. The reasoning sits underneath, there if you want it and skippable if you are standing in a kitchen with ninety seconds. The number of minutes is on the front and never rounded down.' },
+  { id:'presence', nm:'Phone down', bl:'A few minutes with a name on them',
+    why:'<strong>The awkward part of this app is that it lives on the thing it is competing with.</strong> Screen-time dashboards mostly get swiped away, while blocking and friction do move the number. So the block here is short, you choose it, and it has one of your children’s names on it — five minutes with Mira, not “reduce usage.” Calls still come through, because a parent who misses one call from school is not opening it again.' },
+  { id:'say', nm:'Say it', bl:'Eight lines for eight hard moments',
+    why:'<strong>This is the part people will open on their own.</strong> Eight situations, one line you can borrow for each, and the thing not to add afterward. There is a real argument against a feature like this: the words you say to your own child should be yours and not an app’s. Which is why they are framed as something to borrow on a bad night rather than a script to learn. The apology is the one that matters most. Repair after a fight is what the attachment research actually points at, so losing your temper is treated here as an ordinary Tuesday with something to say afterward.' },
+  { id:'noticed', nm:'Noticed', bl:'One line a day, kept for your child',
+    why:'<strong>This is what is here instead of streaks.</strong> You write one line about something your child did, and it piles up into something you could hand them at sixteen. It brings people back without anyone feeling caught out, and it quietly trains the noticing that the 5:1 ratio depends on. Nothing is scored, and no gap is ever shown to you.' },
+  { id:'child', nm:'Child profile', bl:'What this child needs at this age',
+    why:'<strong>The reference screen, for when you want to understand what is going on rather than be told what to do.</strong> It explains the stage in plain words, lists the three things that fit it, and shows what you have written down about this child. When a birthday moves them into the next stage, this screen changes and the app says so.' },
+  { id:'week', nm:'This week', bl:'Which child got less of you',
+    why:'<strong>The one thing you can’t see on your own is which child got less of you.</strong> So that is all this shows. No percentage, no streak, and no comparison to anybody else. There is one written line, and it reads the same after a bad week as a good one. If this ever starts to feel like a report card, the parents having the hardest months are the ones who will delete it first.' }
 ];
 
 /* ---------------- state ---------------- */
