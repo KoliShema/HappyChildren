@@ -201,6 +201,11 @@ textarea{resize:vertical;min-height:76px}
   font-family:var(--display);font-weight:700;font-size:36px;font-variant-numeric:tabular-nums;letter-spacing:-.04em;
 }
 
+#todayCards{display:flex;flex-direction:column;gap:14px}
+.stack{display:flex;flex-direction:column;gap:2px}
+.card.muted{opacity:.55}
+.barsub{font-size:11.5px;color:var(--muted);margin:-5px 0 6px 66px}
+
 /* ---------- week ---------- */
 .bar{display:flex;align-items:center;gap:10px;font-size:13px}
 .bar .lab{width:56px;flex:0 0 auto;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -268,6 +273,7 @@ textarea{resize:vertical;min-height:76px}
       <span class="flag">Ages 0&ndash;17</span>
       <span class="flag">No streaks</span>
       <span class="flag">About 40 seconds a day</span>
+      <span class="flag">Works if you&rsquo;re the only adult</span>
       <span class="flag">Open source</span>
     </div>
   </header>
@@ -306,7 +312,7 @@ textarea{resize:vertical;min-height:76px}
               </div>
             </div>
             <button class="btn" id="addKid">Add</button>
-            <p class="note">Age is what changes the suggestions. A four-year-old and a fourteen-year-old need close to opposite things from you. Pronouns only change the wording. Nothing else is different by gender, because there is nothing in the research saying it should be.</p>
+            <p class="note">Age is what changes the suggestions. A four-year-old and a fourteen-year-old need close to opposite things from you. Pronouns only change the wording. Nothing else is different by gender, because there is nothing in the research saying it should be. If your children aren&rsquo;t with you every day, you can say so on the Today screen, and no day they weren&rsquo;t there gets counted.</p>
             <button class="btn ghost" data-go="today">Done</button>
           </section>
 
@@ -395,7 +401,7 @@ textarea{resize:vertical;min-height:76px}
               <p class="eyebrow">The one thing worth saying</p>
               <p class="body-sm" id="weekLine"></p>
             </div>
-            <p class="note">There is no streak, no percentage, and nothing comparing you to other families. A week you mostly missed looks the same here as a week you didn&rsquo;t.</p>
+            <p class="note">There is no streak, no percentage, and nothing comparing you to other families. A week you mostly missed looks the same here as a week you didn&rsquo;t. And a day your child wasn&rsquo;t with you doesn&rsquo;t count against you.</p>
             <button class="btn ghost" data-go="today">Back to today</button>
           </section>
 
@@ -461,6 +467,7 @@ textarea{resize:vertical;min-height:76px}
           <div class="pair"><h4><span class="x">&times;</span> Child accounts or monitoring</h4><p>No child signs in and no child is tracked. That keeps children&rsquo;s data out of this entirely, and it keeps COPPA off the critical path. The 2025 rules tightened consent, retention and vendor liability, and collecting nothing is the cheapest way to comply.</p></div>
           <div class="pair"><h4><span class="x">&times;</span> Screen-time shaming</h4><p>Tracking dashboards mostly get swiped away. This blocks the phone for a few minutes with one of your children&rsquo;s names on it, which is a reason to put it down.</p></div>
           <div class="pair"><h4><span class="x">&times;</span> An AI chat companion</h4><p>Sending a description of your child to a model is the riskiest thing this could do. It also swaps the thing that works, which is you talking to your child, for you talking to a phone.</p></div>
+          <div class="pair"><h4><span class="x">&times;</span> A second parent</h4><p>Nothing in here assumes there is another adult in the house to take the other kids, cover bedtime, or stay up instead of you. Where a suggestion would normally need one, it says what to do when there isn&rsquo;t one. And a day your child wasn&rsquo;t with you doesn&rsquo;t get counted at all.</p></div>
           <div class="pair"><h4><span class="x">&times;</span> A fixed daily reminder</h4><p>Seven at night is bath time in some houses and bedtime in others. The prompt comes once, inside a window you set, and it doesn&rsquo;t come again.</p></div>
         </div>
       </div>
@@ -520,7 +527,7 @@ var BANDS = [
     need:'{Name} is finding out what happens when {they} get to decide. The most useful five minutes of your day can be the five where you have no plan for {them} at all.',
     moments:[
       { t:'Five minutes, their rules', m:5,
-        body:'{Name} picks what you do and you follow. No questions, no corrections, no teaching, and no “what color is that?” You can just describe what you see {them} doing.',
+        body:'{Name} picks what you do and you follow. No questions, no corrections, no teaching, and no “what color is that?” You can just describe what you see {them} doing. It doesn’t have to be a quiet house.',
         say:'You put the blue one right on top. Now you’re lining them all up.',
         why:'This is the first phase of Parent-Child Interaction Therapy, where five minutes a day is the treatment itself.' },
       { t:'Say what you saw', m:1,
@@ -539,8 +546,8 @@ var BANDS = [
         body:'Ask about the best part of the day. Then ask about the worst part, in the same voice, like it is a normal thing to ask about.',
         say:'What was the worst part of today?',
         why:'If you only ever ask for the good news, that is the only news you get told later on, when it matters more.' },
-      { t:'Ten minutes, door shut', m:10,
-        body:'Just {name}, with the other kids out of the room. It doesn’t need an activity. What it needs is everybody else not being there.',
+      { t:'Ten minutes, just them', m:10,
+        body:'Ten minutes with only {name}. If there is nobody to take the other kids, after bedtime works, or the drive to one thing works. It doesn’t need an activity.',
         say:'I’m not sharing you for the next ten minutes.',
         why:'In a house with more than one child, undivided attention runs out before time does.' },
       { t:'Say the effort out loud', m:1,
@@ -572,7 +579,7 @@ var BANDS = [
         say:'Do you want me to just listen, or do you want ideas?',
         why:'Most of the fights about advice are really about not being asked first.' },
       { t:'Be up when they get in', m:15,
-        body:'Stay up. You don’t have to ask {them} anything. Make a drink, say one ordinary thing, go to bed.',
+        body:'Stay up if you can. You don’t have to ask {them} anything. Make a drink, say one ordinary thing, go to bed. If you can’t stay up, leave something out on the counter for {them}.',
         say:'There’s food if you want it. Night.',
         why:'Teenagers talk on their own schedule, and it is usually late.' },
       { t:'You go first', m:5,
@@ -599,7 +606,7 @@ var SCREENS = [
   { id:'kids', nm:'Your children', bl:'Name, age, pronouns, nothing else',
     why:'<strong>Age is the one thing you enter that changes what the app says, and it changes all of it.</strong> A four-year-old needs you down on the floor following their lead. A fourteen-year-old needs you awake at eleven at night. Most parenting apps pick one age and then lose the family as the kids get older. Pronouns only change the wording. Nothing else gets collected — no school, no diagnosis, no photo, no birthday — partly because every extra field is somewhere to quit, and partly because children’s data is the last thing this should be holding.' },
   { id:'today', nm:'Today', bl:'One card per child, and that is the app',
-    why:'<strong>This is the screen that has to work on a normal weeknight.</strong> One suggestion per child, with the real number of minutes on it, and a way to swap it out when it doesn’t fit your night. No feed, no backlog, and nothing left over from yesterday. In one large trial of a twelve-module parenting program, 97% of caregivers finished the first module and 8% finished all twelve. So there is nothing here to fall behind on.' },
+    why:'<strong>This is the screen that has to work on a normal weeknight.</strong> One suggestion per child, with the real number of minutes on it, and a way to swap it out when it doesn’t fit your night. No feed, no backlog, and nothing left over from yesterday. In one large trial of a twelve-module parenting program, 97% of caregivers finished the first module and 8% finished all twelve. So there is nothing here to fall behind on. If one of your children isn’t with you today, you can say so, and nothing is held against that day.' },
   { id:'moment', nm:'A moment', bl:'What to do, what to open with, why',
     why:'<strong>Most parents don’t have trouble wanting to connect. They have trouble with the first sentence.</strong> So every one of these gives you something to open with and not only something to do. The reasoning sits underneath, there if you want it and skippable if you are standing in a kitchen with ninety seconds. The number of minutes is on the front and never rounded down.' },
   { id:'presence', nm:'Phone down', bl:'A few minutes with a name on them',
@@ -611,13 +618,13 @@ var SCREENS = [
   { id:'child', nm:'Child profile', bl:'What this child needs at this age',
     why:'<strong>The reference screen, for when you want to understand what is going on rather than be told what to do.</strong> It explains the stage in plain words, lists the three things that fit it, and shows what you have written down about this child. When a birthday moves them into the next stage, this screen changes and the app says so.' },
   { id:'week', nm:'This week', bl:'Which child got less of you',
-    why:'<strong>The one thing you can’t see on your own is which child got less of you.</strong> So that is all this shows. No percentage, no streak, and no comparison to anybody else. There is one written line, and it reads the same after a bad week as a good one. If this ever starts to feel like a report card, the parents having the hardest months are the ones who will delete it first.' }
+    why:'<strong>The one thing you can’t see on your own is which child got less of you.</strong> So that is all this shows. No percentage, no streak, and no comparison to anybody else. It counts only the days a child was actually with you, which matters when you are running the week on your own or your kids are not all under one roof. There is one written line, and it reads the same after a bad week as a good one. If this ever starts to feel like a report card, the parents having the hardest months are the ones who will delete it first.' }
 ];
 
 /* ---------------- state ---------------- */
 var kids = [
-  { id:1, name:'Mira', age:4, g:'f' },
-  { id:2, name:'Eli', age:11, g:'m' }
+  { id:1, name:'Mira', age:4, g:'f', away:false, days:7 },
+  { id:2, name:'Eli', age:11, g:'m', away:false, days:5 }
 ];
 var noticed = [
   { kid:'Eli', text:'Walked his sister in from the bus without being asked.', when:'Thu' },
@@ -670,18 +677,39 @@ function renderToday(){
   if(!kids.length){ box.innerHTML = '<div class="card"><p>No children added yet. Add one and this fills in.</p></div>'; return; }
   for(var i=0;i<kids.length;i++){
     (function(k,idx){
-      var b = bandFor(k.age);
-      var mo = b.moments[(rot+idx) % b.moments.length];
-      var btn = document.createElement('button');
-      btn.className = 'card tap';
-      var blurb = fill(mo.body,k);
-      if(blurb.length>92) blurb = blurb.slice(0,92) + '…';
-      btn.innerHTML =
-        '<div class="card-head"><span class="who">'+esc(k.name)+', '+k.age+'</span><span class="mins">'+mo.m+' min</span></div>'+
-        '<h3>'+esc(mo.t)+'</h3>'+
-        '<p>'+esc(blurb)+'</p>';
-      btn.onclick = function(){ openMoment(k, mo); };
-      box.appendChild(btn);
+      var wrap = document.createElement('div');
+      wrap.className = 'stack';
+      if(k.away){
+        var away = document.createElement('div');
+        away.className = 'card muted';
+        away.innerHTML = '<div class="card-head"><span class="who">'+esc(k.name)+', '+k.age+'</span><span class="mins">not with you</span></div>'+
+                         '<p>Nothing due. This day will not be counted.</p>';
+        wrap.appendChild(away);
+        var back = document.createElement('button');
+        back.className = 'btn quiet';
+        back.textContent = k.name + ' is with me after all';
+        back.onclick = function(){ k.away = false; k.days++; renderToday(); };
+        wrap.appendChild(back);
+      } else {
+        var b = bandFor(k.age);
+        var mo = b.moments[(rot+idx) % b.moments.length];
+        var btn = document.createElement('button');
+        btn.className = 'card tap';
+        var blurb = fill(mo.body,k);
+        if(blurb.length>92) blurb = blurb.slice(0,92) + '…';
+        btn.innerHTML =
+          '<div class="card-head"><span class="who">'+esc(k.name)+', '+k.age+'</span><span class="mins">'+mo.m+' min</span></div>'+
+          '<h3>'+esc(mo.t)+'</h3>'+
+          '<p>'+esc(blurb)+'</p>';
+        btn.onclick = function(){ openMoment(k, mo); };
+        wrap.appendChild(btn);
+        var skip = document.createElement('button');
+        skip.className = 'btn quiet';
+        skip.textContent = 'Not with me today';
+        skip.onclick = function(){ k.away = true; if(k.days>0) k.days--; renderToday(); };
+        wrap.appendChild(skip);
+      }
+      box.appendChild(wrap);
     })(kids[i], i);
   }
 }
@@ -776,14 +804,22 @@ function renderWeek(){
   for(var i=0;i<kids.length;i++){ if(counts[i%counts.length]>max) max = counts[i%counts.length]; }
   for(var j=0;j<kids.length;j++){
     var c = counts[j%counts.length];
-    var row=document.createElement('div'); row.className='bar';
-    row.innerHTML='<span class="lab">'+esc(kids[j].name)+'</span><span class="track"><span class="fill" style="width:'+Math.round(c/max*100)+'%"></span></span><span class="n">'+c+'</span>';
+    var d = (kids[j].days===undefined) ? 7 : kids[j].days;
+    var row = document.createElement('div'); row.className='bar';
+    row.innerHTML = '<span class="lab">'+esc(kids[j].name)+'</span><span class="track"><span class="fill" style="width:'+Math.round(c/max*100)+'%"></span></span><span class="n">'+c+'</span>';
     box.appendChild(row);
+    var sb = document.createElement('div'); sb.className='barsub';
+    sb.textContent = d + (d===1 ? ' day' : ' days') + ' with you';
+    box.appendChild(sb);
   }
   if(kids.length>1){
-    el('weekLine').textContent = kids[1].name + ' got one this week. ' + kids[0].name + ' got three. That is usually about whose week was louder, not about who needed you more.';
+    var k0=kids[0], k1=kids[1];
+    var c0=counts[0], c1=counts[1%counts.length];
+    var d0=(k0.days===undefined)?7:k0.days, d1=(k1.days===undefined)?7:k1.days;
+    el('weekLine').textContent = k1.name+' got '+c1+' in '+d1+' days with you. '+k0.name+' got '+c0+' in '+d0+'. Worth looking at the days before you read anything into the difference.';
   } else if(kids.length===1){
-    el('weekLine').textContent = 'Three moments with ' + kids[0].name + ', across two days. Short and clustered beats long and planned.';
+    var dd=(kids[0].days===undefined)?7:kids[0].days;
+    el('weekLine').textContent = 'Three moments with '+kids[0].name+' in '+dd+' days, across two of them.';
   } else {
     el('weekLine').textContent = 'Add a child and this fills in.';
   }
@@ -829,7 +865,7 @@ el('addKid').onclick = function(){
   if(!n || isNaN(a)) { el('k-name').focus(); return; }
   if(a<0) a=0;
   if(a>17) a=17;
-  kids.push({ id:nextId++, name:n, age:a, g:el('k-g').value });
+  kids.push({ id:nextId++, name:n, age:a, g:el('k-g').value, away:false, days:7 });
   el('k-name').value=''; el('k-age').value='';
   renderKids();
 };

@@ -22,7 +22,7 @@ It loads with an example family, Mira who is 4 and Eli who is 11. Add your own o
 |---|--------|--------------|
 | 1 | Welcome | Asks for your children's names before anything else. No sign-up, no slideshow. |
 | 2 | Your children | Name, age, pronouns. Nothing else gets collected. |
-| 3 | Today | One suggestion per child, written for that child's age. |
+| 3 | Today | One suggestion per child, written for that child's age. Mark a child as not with you and that day stops counting. |
 | 4 | A moment | What to do, something to open with, and why it works. |
 | 5 | Phone down | A few minutes blocked, with one of your children's names on it. |
 | 6 | Say it | Eight lines you can borrow for eight hard moments. |
@@ -39,7 +39,10 @@ The content is written separately for **0–2, 3–5, 6–9, 10–12 and 13–17
 - **No child accounts and no monitoring.** No child signs in and no child is tracked, which keeps children's data out of this entirely.
 - **No screen-time shaming.** The block has a child's name on it, which is a reason to put the phone down.
 - **No AI chat companion.** Sending a description of your child to a model is the riskiest thing this could do.
+- **No second parent.** Nothing assumes there's another adult in the house to take the other kids, cover bedtime or stay up instead of you. Where a suggestion would normally need one, it says what to do when there isn't one.
 - **No fixed daily reminder.** Seven at night is bath time in some houses and bedtime in others.
+
+It's for all parents. It just doesn't take the second one for granted. A child who wasn't with you that day doesn't count against your week, which matters whether that's custody, a hospital stay, camp, or a night at a grandparent's.
 
 ## What it's built on
 
