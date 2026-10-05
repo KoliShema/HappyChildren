@@ -167,6 +167,12 @@ body{
 .kidrow .meta{flex:1;min-width:0}
 .kidrow .meta b{display:block;font-size:17px;font-weight:600}
 .kidrow .meta span{font-size:14px;color:var(--muted)}
+.kidrow .kidx{
+  appearance:none;background:transparent;border:0;cursor:pointer;font-family:inherit;
+  color:var(--muted);font-size:26px;line-height:1;flex:0 0 auto;
+  min-width:44px;min-height:44px;border-radius:12px;
+}
+.kidrow .kidx:hover{color:var(--coral);background:var(--coral-soft)}
 .field{display:flex;flex-direction:column;gap:7px}
 .field label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--muted)}
 .field input, .field select{
@@ -266,7 +272,7 @@ textarea{
             <p class="body-sm">This asks for about forty seconds a day. If it ever asks for more, delete it.</p>
           </div>
           <button class="btn" data-go="kids">Add my children</button>
-          <button class="btn ghost" data-go="today">Show me an example family</button>
+          <button class="btn ghost" id="exampleFamily">Show me an example family</button>
         </section>
 
         <!-- 2. KIDS -->
@@ -355,6 +361,7 @@ textarea{
           <div id="c-moments" style="display:flex;flex-direction:column;gap:14px"></div>
           <p class="eyebrow">Noticed about <span id="c-name">Mira</span></p>
           <div id="c-noticed" style="display:flex;flex-direction:column;gap:14px"></div>
+          <button class="btn quiet" id="removeKid">Remove this child</button>
           <button class="btn quiet" data-go="welcome">Start over &rarr;</button>
         </section>
 
@@ -586,7 +593,7 @@ var SCREENS = [
   { id:'welcome', nm:'Welcome', bl:'Names first, no pitch',
     why:'<strong>No sign-up, no slideshow, no explaining itself.</strong> The first screen asks for your children’s names, because every screen after it is built around one of them rather than around parenting in general. The line underneath, about forty seconds a day and delete it if it asks for more, is a promise the rest of the app has to keep.' },
   { id:'kids', nm:'Add a child', bl:'A name and an age. That is it.',
-    why:'<strong>Two fields on one screen.</strong> Every extra onboarding screen costs 10 to 20% of the people who started, and flows over five screens finish below 60%. Age is the one entry that changes what the app says, and it changes all of it. Pronouns moved to the child’s own page because they only affect wording, and a third field on a setup screen is a place to quit.' },
+    why:'<strong>Two fields on one screen.</strong> Every extra onboarding screen costs 10 to 20% of the people who started, and flows over five screens finish below 60%. Age is the one entry that changes what the app says, and it changes all of it. Pronouns moved to the child’s own page because they only affect wording, and a third field on a setup screen is a place to quit. Each child in the list has a remove next to them, because a list you can only add to is a list that goes wrong once and stays wrong.' },
   { id:'today', nm:'Today', bl:'One card per child, and that is the app',
     why:'<strong>This is the screen that has to work on a normal weeknight.</strong> One suggestion per child, with the real number of minutes on it and a line written to fit rather than cut off. One primary action, one way to swap, one way out. In a trial of a twelve-module parenting program, 97% of caregivers finished the first module and 8% finished all twelve, so there is nothing here to fall behind on.' },
   { id:'moment', nm:'A moment', bl:'What to do, what to open with',
@@ -598,20 +605,27 @@ var SCREENS = [
   { id:'noticed', nm:'Noticed', bl:'One line a day, kept for your child',
     why:'<strong>This is what is here instead of streaks.</strong> You write one line about something your child did, and it piles up into something you could hand them at sixteen. It brings people back without anyone feeling caught out, and it quietly trains the noticing that the 5:1 ratio depends on. Nothing is scored, and no gap is ever shown to you.' },
   { id:'child', nm:'Their page', bl:'What this child needs at this age',
-    why:'<strong>Everything about one child in one place.</strong> The stage in plain words, the three things that fit it, and what you have written down. This is also where “not with me today” lives now. It used to sit under every card on the Today screen, which added a daily decision to solve a problem most days don’t have. When a birthday moves them into the next stage, this screen changes and the app says so.' },
+    why:'<strong>Everything about one child in one place.</strong> The stage in plain words, the three things that fit it, and what you have written down. This is also where “not with me today” lives now. It used to sit under every card on the Today screen, which added a daily decision to solve a problem most days don’t have. Removing a child is here too, kept quiet at the bottom and behind a confirm, because it is rare and it takes the written lines with it. When a birthday moves them into the next stage, this screen changes and the app says so.' },
   { id:'week', nm:'This week', bl:'Which child got less of you',
     why:'<strong>The one thing you can’t see on your own is which child got less of you.</strong> So that is all this shows. No percentage, no streak, no comparison to anybody else. It counts only the days a child was actually with you, which matters when you are running the week on your own or your kids are not all under one roof. One written line, and it reads the same after a bad week as a good one.' }
 ];
 
 /* ---------------- state ---------------- */
-var kids = [
-  { id:1, name:'Mira', age:4, g:'f', away:false, days:7 },
-  { id:2, name:'Eli', age:11, g:'m', away:false, days:5 }
-];
-var noticed = [
-  { kid:'Eli', text:'Walked his sister in from the bus without being asked.', when:'Thu' },
-  { kid:'Mira', text:'Told me the sad part of the story was her favorite part.', when:'Tue' }
-];
+/* The example family lives in a function so it can be put back after you delete it. */
+function sampleKids(){
+  return [
+    { id:1, name:'Mira', age:4, g:'f', away:false, days:7 },
+    { id:2, name:'Eli', age:11, g:'m', away:false, days:5 }
+  ];
+}
+function sampleNoticed(){
+  return [
+    { kid:'Eli', text:'Walked his sister in from the bus without being asked.', when:'Thu' },
+    { kid:'Mira', text:'Told me the sad part of the story was her favorite part.', when:'Tue' }
+  ];
+}
+var kids = sampleKids();
+var noticed = sampleNoticed();
 var nextId = 3, rot = 0, curKid = 0, timer = null, activeMoment = null;
 
 /* ---------------- helpers ---------------- */
@@ -631,6 +645,43 @@ function fill(str,k){
     .replace(/\{they\}/g,p.they).replace(/\{them\}/g,p.them).replace(/\{their\}/g,p.their);
 }
 function minsTag(m){ return '<span class="mins">'+CLOCKSVG+m+' min</span>'; }
+
+/* ---------------- removing a child ---------------- */
+function removeKid(id){
+  var k = null, idx = -1, i;
+  for(i=0;i<kids.length;i++){ if(kids[i].id===id){ k=kids[i]; idx=i; break; } }
+  if(!k) return;
+
+  /* Only clear the written lines if no other child answers to the same name. */
+  var sharedName = false;
+  for(i=0;i<kids.length;i++){ if(i!==idx && kids[i].name===k.name) sharedName = true; }
+  var notes = 0;
+  if(!sharedName){ for(i=0;i<noticed.length;i++){ if(noticed[i].kid===k.name) notes++; } }
+
+  var msg = 'Remove ' + k.name + '?';
+  if(notes) msg += '\n\nThe ' + notes + (notes===1 ? ' line' : ' lines') + ' you wrote down about ' + k.name + ' will go too. This can\u2019t be undone.';
+  else msg += '\n\nThis can\u2019t be undone.';
+  if(!window.confirm(msg)) return;
+
+  kids.splice(idx,1);
+  if(notes){
+    var keep = [];
+    for(i=0;i<noticed.length;i++){ if(noticed[i].kid!==k.name) keep.push(noticed[i]); }
+    noticed = keep;
+  }
+  if(curKid >= kids.length) curKid = kids.length ? kids.length-1 : 0;
+
+  if(!kids.length){ go('welcome'); return; }
+  renderKids(); renderToday(); renderChild();
+}
+
+function restoreExample(){
+  if(kids.length){ go('today'); return; }
+  kids = sampleKids();
+  noticed = sampleNoticed();
+  nextId = 3; curKid = 0; rot = 0;
+  go('today');
+}
 
 /* ---------------- navigation ---------------- */
 function go(id){
@@ -699,13 +750,23 @@ function openMoment(k, mo){
 function renderKids(){
   var box = el('kidlist'); box.innerHTML='';
   for(var i=0;i<kids.length;i++){
-    var k = kids[i], b = bandFor(k.age);
-    var row = document.createElement('div');
-    row.className='kidrow';
-    row.innerHTML = '<div class="avatar">'+esc(k.name.charAt(0))+'</div>'+
-      '<div class="meta"><b>'+esc(k.name)+'</b><span>'+k.age+' &middot; '+b.headline.toLowerCase()+'</span></div>';
-    box.appendChild(row);
+    (function(k){
+      var b = bandFor(k.age);
+      var row = document.createElement('div');
+      row.className='kidrow';
+      row.innerHTML = '<div class="avatar">'+esc(k.name.charAt(0))+'</div>'+
+        '<div class="meta"><b>'+esc(k.name)+'</b><span>'+k.age+' &middot; '+b.headline.toLowerCase()+'</span></div>';
+      var rm = document.createElement('button');
+      rm.className = 'kidx';
+      rm.setAttribute('aria-label', 'Remove ' + k.name);
+      rm.setAttribute('title', 'Remove ' + k.name);
+      rm.innerHTML = '&times;';
+      rm.onclick = function(){ removeKid(k.id); };
+      row.appendChild(rm);
+      box.appendChild(row);
+    })(kids[i]);
   }
+  if(!kids.length) box.innerHTML = '<p class="note">Nobody added yet.</p>';
 }
 function renderScripts(){
   var box = el('scriptList'); box.innerHTML='';
@@ -722,6 +783,7 @@ function renderNoticed(){
   for(var i=0;i<kids.length;i++){
     var o=document.createElement('option'); o.value=kids[i].name; o.textContent=kids[i].name; sel.appendChild(o);
   }
+  el('saveNoticed').disabled = !kids.length;
   var box = el('noticedList'); box.innerHTML='';
   for(var j=0;j<noticed.length;j++){
     var n = noticed[j];
@@ -731,7 +793,7 @@ function renderNoticed(){
   }
 }
 function renderChild(){
-  if(!kids.length) return;
+  if(!kids.length){ go('welcome'); return; }
   if(curKid >= kids.length) curKid = 0;
   var k = kids[curKid], b = bandFor(k.age);
   el('c-title').textContent = k.name + ', ' + k.age;
@@ -746,6 +808,10 @@ function renderChild(){
     if(k.away){ k.away=false; k.days++; } else { k.away=true; if(k.days>0) k.days--; }
     renderChild();
   };
+
+  var rm = el('removeKid');
+  rm.textContent = 'Remove ' + k.name;
+  rm.onclick = function(){ removeKid(k.id); };
 
   var sw = el('kidSwitch'); sw.innerHTML='';
   for(var i=0;i<kids.length;i++){
@@ -849,6 +915,7 @@ el('briefToggle').onclick = function(){
   this.setAttribute('aria-expanded', open ? 'true' : 'false');
   this.innerHTML = open ? 'Hide the reasoning' : 'Why it’s built this way';
 };
+el('exampleFamily').onclick = function(){ restoreExample(); };
 el('addKid').onclick = function(){
   var n = el('k-name').value.trim();
   var a = parseInt(el('k-age').value,10);
@@ -862,6 +929,7 @@ el('addKid').onclick = function(){
 el('shuffle').onclick = function(){ rot++; renderToday(); };
 el('endEarly').onclick = function(){ stopTimer(); go('noticed'); };
 el('saveNoticed').onclick = function(){
+  if(!kids.length) return;
   var txt = el('n-text').value.trim();
   if(!txt) { el('n-text').focus(); return; }
   noticed.unshift({ kid: el('n-kid').value, text: txt, when:'Today' });
