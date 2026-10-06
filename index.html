@@ -292,6 +292,7 @@ textarea{
           </div>
           <button class="btn" data-go="kids">Add my children</button>
           <button class="btn ghost" id="exampleFamily">Show me an example family</button>
+          <button class="btn quiet" onclick="eraseAll()">Erase everything</button>
         </section>
 
         <!-- 2. KIDS -->
@@ -689,6 +690,41 @@ function fill(str,k){
 }
 function minsTag(m){ return '<span class="mins">'+CLOCKSVG+m+' min</span>'; }
 
+/* ---------------- saving ----------------
+   Everything stays on this device. No server, no account, nothing sent
+   anywhere — the same promise as before, except now it survives a refresh. */
+var STORE = 'happychildren-v1';
+
+function saveAll(){
+  try{
+    localStorage.setItem(STORE, JSON.stringify({
+      v: 1, kids: kids, noticed: noticed, foods: foods, nextId: nextId
+    }));
+  }catch(e){ /* private mode or full disk: the app still works, it just won't remember */ }
+}
+
+function loadAll(){
+  try{
+    var raw = localStorage.getItem(STORE);
+    if(!raw) return false;
+    var d = JSON.parse(raw);
+    if(!d || !Array.isArray(d.kids)) return false;
+    kids    = d.kids;
+    noticed = Array.isArray(d.noticed) ? d.noticed : [];
+    foods   = Array.isArray(d.foods)   ? d.foods   : [];
+    nextId  = typeof d.nextId === 'number' ? d.nextId : kids.length + 1;
+    return true;
+  }catch(e){ return false; }   /* anything corrupt: fall back to the example family */
+}
+
+function eraseAll(){
+  if(!window.confirm('Erase everything?\n\nYour children, the lines you wrote and the food notes all go. This can\u2019t be undone.')) return;
+  try{ localStorage.removeItem(STORE); }catch(e){}
+  kids = sampleKids(); noticed = sampleNoticed(); foods = sampleFoods();
+  nextId = 3; curKid = 0; rot = 0;
+  go('welcome');
+}
+
 /* ---------------- folding sections ---------------- */
 /* Which sections are open is remembered while you switch between children. */
 var sectOpen = { moments:true, noticed:false, food:false };
@@ -738,6 +774,7 @@ function removeKid(id){
   }
   if(curKid >= kids.length) curKid = kids.length ? kids.length-1 : 0;
 
+  saveAll();
   if(!kids.length){ go('welcome'); return; }
   renderKids(); renderToday(); renderChild();
 }
@@ -748,6 +785,7 @@ function restoreExample(){
   noticed = sampleNoticed();
   foods = sampleFoods();
   nextId = 3; curKid = 0; rot = 0;
+  saveAll();
   go('today');
 }
 
@@ -912,6 +950,7 @@ function renderChild(){
   aw.textContent = k.away ? (k.name + ' is with me after all') : 'Not with me today';
   aw.onclick = function(){
     if(k.away){ k.away=false; k.days++; } else { k.away=true; if(k.days>0) k.days--; }
+    saveAll();
     renderChild();
   };
 
@@ -973,6 +1012,7 @@ function renderChild(){
     var ate = el('f-ate').value.trim();
     if(!asked && !ate){ el('f-asked').focus(); return; }
     foods.unshift({ kid:k.name, asked: asked || '\u2014', ate: ate, when:'Today' });
+    saveAll();
     el('f-asked').value=''; el('f-ate').value='';
     renderChild();
   };
@@ -1066,6 +1106,7 @@ el('addKid').onclick = function(){
   if(a<0) a=0;
   if(a>17) a=17;
   kids.push({ id:nextId++, name:n, age:a, g:'n', away:false, days:7 });
+  saveAll();
   el('k-name').value=''; el('k-age').value='';
   renderKids();
 };
@@ -1076,6 +1117,7 @@ el('saveNoticed').onclick = function(){
   var txt = el('n-text').value.trim();
   if(!txt) { el('n-text').focus(); return; }
   noticed.unshift({ kid: el('n-kid').value, text: txt, when:'Today' });
+  saveAll();
   el('n-text').value='';
   renderNoticed();
 };
@@ -1092,6 +1134,7 @@ el('saveNoticed').onclick = function(){
   }
 })();
 
+loadAll();
 go('today');
 </script>
 </body>
