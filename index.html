@@ -154,6 +154,7 @@ body{
   border-radius:16px;background:var(--coral-soft);color:var(--ink);border-left:4px solid var(--coral);
 }
 .note{font-size:14.5px;color:var(--muted);margin:0}
+.srcline{font-size:13px;color:var(--muted);margin:0;padding-top:10px;border-top:1px solid var(--line);font-style:italic}
 .tier{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
   padding:4px 10px;border-radius:999px;align-self:flex-start}
 .t-study{background:var(--coral);color:var(--coral-ink)}
@@ -226,13 +227,6 @@ textarea{
 .dial .arc{fill:none;stroke:var(--coral);stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1s linear}
 .dial .read{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-weight:700;font-size:44px;font-variant-numeric:tabular-nums;letter-spacing:-.045em}
 
-/* ---------- week ---------- */
-.bar{display:flex;align-items:center;gap:12px;font-size:15px}
-.bar .lab{width:66px;flex:0 0 auto;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bar .track{flex:1;height:12px;border-radius:999px;background:var(--line);overflow:hidden;min-width:0}
-.bar .fill{display:block;height:100%;border-radius:999px;background:var(--coral)}
-.bar .n{width:20px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
-.barsub{font-size:13px;color:var(--muted);margin:-6px 0 8px 78px}
 
 /* ---------- brief ---------- */
 .briefbar{display:flex;justify-content:center;margin-top:26px}
@@ -406,17 +400,12 @@ textarea{
           <button class="btn quiet" data-go="welcome">Start over &rarr;</button>
         </section>
 
-        <!-- 9. WEEK -->
-        <section class="screen" id="sc-week" hidden>
-          <p class="eyebrow">Sunday night</p>
-          <h2 class="s-title">Your week, with no scoreboard</h2>
-          <div class="card">
-            <div id="weekBars" style="display:flex;flex-direction:column;gap:12px"></div>
-          </div>
-          <div class="card flat">
-            <p class="body-sm" id="weekLine"></p>
-          </div>
-          <p class="note">No streak and no percentage. A week you mostly missed looks the same here as a week you didn&rsquo;t, and a day your child wasn&rsquo;t with you doesn&rsquo;t count against you.</p>
+        <!-- 9. TODAY'S NOTE -->
+        <section class="screen" id="sc-note" hidden>
+          <p class="eyebrow">One note</p>
+          <h2 class="s-title">Today</h2>
+          <div id="noteBox"></div>
+          <p class="note">One a day, matched to the ages you added. Nothing accumulates and there is nothing to finish.</p>
         </section>
 
       </div>
@@ -424,7 +413,7 @@ textarea{
         <button data-go="today"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3.5"/><path d="M8 3v4M16 3v4M3.5 10.5h17"/></svg>Today</button>
         <button data-go="say"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5a3 3 0 0 1-3 3H9l-4.5 3.5V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3z"/></svg>Say it</button>
         <button data-go="child"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 20c0-3.4 2.8-5.2 6.2-5.2S15.2 16.6 15.2 20"/><circle cx="17.6" cy="9.8" r="2.4"/><path d="M16.2 15.1c3 0 5 1.8 5 4.9"/></svg>Kids</button>
-        <button data-go="week"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20.5V11M12 20.5V4M19 20.5v-6.5"/></svg>Week</button>
+        <button data-go="note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 3.5h13v17l-6.5-3.5-6.5 3.5z"/></svg>Note</button>
       </nav>
     </div>
   </div>
@@ -633,6 +622,8 @@ var SCRIPTS = [
 
 var SAFETY = {"k": "They’ve told you something frightening", "s": "I believe you. I’m glad you told me. I’m going to get help for this.", "n": "Abuse, someone hurting them, or hurting themselves. Five things, in order.", "steps": ["Keep your face calm, even if you aren’t. Shock, anger or disgust is what makes a child stop mid-sentence or decide it was their fault.", "Believe them, and say so. Children very rarely invent this.", "Don’t promise to keep it secret. You can say you’ll only tell the people who can help.", "Don’t question them. No details, no “are you sure”, no filling in gaps. Pressing for specifics can make a child take it back, and it can damage a later investigation. Let them say what they say, in their words, and stop there.", "Tell someone who can help, today. Not next week."], "numbers": "In the US: Childhelp, 1-800-422-4453, any hour. If they’ve talked about hurting themselves, call or text 988. Your doctor, their school, or your rav are all reasonable places to start.", "w": "This follows guidance from the NSPCC, whose 2019 research looked specifically at how adults should respond, the National Child Traumatic Stress Network, and Childhelp. They differ on wording and agree on all five steps. The NCTSN also notes children whose caregiver responds supportively recover faster."};
 
+var NOTES = {"b1": [["Wait longer than feels natural", "You say a thing, then stop. Three or four seconds of nothing is where the back-and-forth actually happens. Most adults fill that gap before the baby gets a turn.", "Harvard’s Center on the Developing Child, on serve and return."], ["Books beat toys for words", "Sharing a book pulls more complicated sentences out of you than playing with toys does. Not because books are improving, but because of what they make you say.", "Comparisons of parent speech during book sharing and toy play."], ["Narrate the boring bits", "Nappy changes, the sink, putting shopping away. Ordinary routines give far more chances to hear words than any special activity does.", "Research on child-directed speech."], ["Same bedtime, same order", "Doing the bedtime steps in the same order most nights is the bit that does the work. A trial found consistent use of bedtime strategies predicted longer sleep and fewer bedtime battles.", "Randomised controlled trial on early-life sleep."]], "b2": [["Five minutes is a dose, not a warm-up", "In the first phase of Parent-Child Interaction Therapy, five minutes a day of play the child leads is the treatment. You describe and you follow. No questions, no teaching, no corrections.", "Parent-Child Interaction Therapy."], ["Describe, don’t rate", "Saying what you saw them do predicts a child believing ability can be grown. “Good job” only tells them you approved. Honest caveat: the same study found no evidence that praising the child instead does harm.", "Gunderson and Dweck, parents followed over five years."], ["Naming a feeling settles it", "Putting a feeling into words lowers activity in the brain’s threat centre. It works better than arguing with the feeling, and better than explaining why it shouldn’t be there.", "Lieberman, UCLA, and twenty years of follow-up studies."], ["Coaching beats dismissing", "Parents who notice and name feelings rather than minimising them have children with better emotional control and better friendships. A meta-analysis of 15 trials found a real effect on both parenting and children.", "Gottman on meta-emotion; 2023 meta-analysis."]], "b3": [["How you take the small stuff", "What a seven-year-old tells you decides what a fifteen-year-old tells you. Parents reacting well to what they’re told predicts the child feeling connected, which predicts more being told a year later.", "Stattin and Kerr, and the work that followed."], ["Effort out loud", "Praise aimed at what they tried, rather than what they are, is what predicts them trying again. Name the specific thing.", "Gunderson and Dweck."], ["Firm and warm beats firm", "Clear limits held warmly predict better self-control than the same limits held harshly. The warmth is not the soft part, it is half of the mechanism.", "Comparisons of authoritative and authoritarian parenting."], ["Feelings first, problem second", "Children whose parents coach feelings rather than dismiss them do better with peers. Solving comes after naming, not instead of it.", "Gottman on emotion coaching."]], "b4": [["Asking is the weaker lever", "What parents know about their child’s life depends far more on the child choosing to tell them than on parents asking. Pressing produces resistance, not information.", "Stattin and Kerr, Swedish adolescents."], ["Advice they didn’t ask for", "Unsolicited advising and lecturing are coded in the research as autonomy-suppressing. Asking whether they want ideas is the difference between help and instruction.", "Self-determination theory research."], ["Repair, not perfection", "Parents and children are out of step most of the time. That’s normal and harmless, provided repair follows. The quality of the repair is what separates secure from insecure.", "Tronick, on rupture and repair."], ["They notice the difference", "Unequal treatment between siblings is linked to more behaviour problems. They are keeping score even when you are not.", "Research on parental differential treatment."]], "b5": [["Late is biology", "Melatonin releases later through adolescence, so staying up is a clock change rather than defiance. Being awake when they are is a practical way to be available.", "Paediatric sleep research on circadian phase delay."], ["Go first after the fight", "What builds security isn’t avoiding the rupture, it’s the repair. Saying your part, with no “but” on the end, is the move.", "Tronick, on rupture and repair."], ["Volunteered, not extracted", "Teenagers decide what you know. Pressure reduces it. Being someone they want to tell is the whole strategy.", "Stattin and Kerr."], ["Ask before you solve", "Most arguments about advice are arguments about not being asked first. One sentence settles it.", "Self-determination theory research."]]};
+
 var SCREENS = [
   { id:'welcome', nm:'Welcome', bl:'Names first, no pitch',
     why:'<strong>No sign-up, no slideshow, no explaining itself.</strong> The first screen asks for your children’s names, because every screen after it is built around one of them rather than around parenting in general. The line underneath, about forty seconds a day and delete it if it asks for more, is a promise the rest of the app has to keep.' },
@@ -650,8 +641,8 @@ var SCREENS = [
     why:'<strong>This is what is here instead of streaks.</strong> You write one line about something your child did, and it piles up into something you could hand them at sixteen. It brings people back without anyone feeling caught out, and it quietly trains the noticing that the 5:1 ratio depends on. Nothing is scored, and no gap is ever shown to you.' },
   { id:'child', nm:'Their page', bl:'What this child needs at this age',
     why:'<strong>Everything about one child in one place.</strong> The stage in plain words, the three things that fit it, and what you have written down. This is also where “not with me today” lives now. It used to sit under every card on the Today screen, which added a daily decision to solve a problem most days don’t have. Every suggestion carries a label saying whether it comes from a named study, follows from one, or is a judgement nobody has tested — because a parenting app that cites research for all of its advice, when only some of it is researched, is lying by implication. When that labelling was done, two cards turned out to rest on nothing, so they were cut rather than dressed up. One of them told a parent to ask a better question, which cut against the finding that asking is the weaker lever; what replaced it works on the evidenced mechanism instead, which is how you react when they do tell you something. The three lists underneath fold away, with a count on each, so the page is short enough to take in at a glance and you open only the one you came for. Food sits here as two boxes, what they asked for and what they actually ate, because knowing your four-year-old asks for pasta plain and then eats it with sauce is worth remembering and is nobody’s business but yours. It is deliberately not a food diary: nothing is counted, nothing is added up, and a day they barely ate looks the same as any other, because an app that shows a parent what their child didn’t eat is an app that makes dinner harder. Removing a child is here too, kept quiet at the bottom and behind a confirm, because it is rare and it takes the written lines with it. When a birthday moves them into the next stage, this screen changes and the app says so.' },
-  { id:'week', nm:'This week', bl:'Which child got less of you',
-    why:'<strong>The one thing you can’t see on your own is which child got less of you.</strong> So that is all this shows. No percentage, no streak, no comparison to anybody else. It counts only the days a child was actually with you, which matters when you are running the week on your own or your kids are not all under one roof. One written line, and it reads the same after a bad week as a good one.' }
+  { id:'note', nm:'One note', bl:'A researched note a day, for the ages you have',
+    why:'<strong>This replaced a weekly chart.</strong> That chart showed which child had got less of you, and it was wrong on two counts. It ran on invented numbers rather than anything you had done, and even working correctly it would have handed a parent a figure to feel bad about on a week when they were already stretched. What is here instead is one note a day, drawn only from the age bands of the children you added, with the source named underneath. Nothing accumulates, nothing is scored, and there is nothing to fall behind on \u2014 which is the same reason there are no streaks anywhere else in this app.' }
 ];
 
 /* ---------------- state ---------------- */
@@ -773,7 +764,7 @@ function go(id){
   if(id==='today') renderToday();
   if(id==='kids') renderKids();
   if(id==='child') renderChild();
-  if(id==='week') renderWeek();
+  if(id==='note') renderNote();
   if(id==='noticed') renderNoticed();
   if(id==='say') renderScripts();
   if(id!=='presence') stopTimer();
@@ -993,32 +984,34 @@ function renderChild(){
   setSectCount('food', nF);
   paintSect('moments'); paintSect('noticed'); paintSect('food');
 }
-function renderWeek(){
-  var counts = [3,1,4,2,0];
-  var box = el('weekBars'); box.innerHTML='';
-  var max = 1;
-  for(var i=0;i<kids.length;i++){ if(counts[i%counts.length]>max) max = counts[i%counts.length]; }
-  for(var j=0;j<kids.length;j++){
-    var c = counts[j%counts.length];
-    var d = (kids[j].days===undefined) ? 7 : kids[j].days;
-    var row = document.createElement('div'); row.className='bar';
-    row.innerHTML = '<span class="lab">'+esc(kids[j].name)+'</span><span class="track"><span class="fill" style="width:'+Math.round(c/max*100)+'%"></span></span><span class="n">'+c+'</span>';
-    box.appendChild(row);
-    var sb = document.createElement('div'); sb.className='barsub';
-    sb.textContent = d + (d===1 ? ' day' : ' days') + ' with you';
-    box.appendChild(sb);
+function renderNote(){
+  var box = el('noteBox'); if(!box) return;
+  /* only bands that match a child you actually added */
+  var bands = [], i, b;
+  for(i=0;i<kids.length;i++){
+    b = bandFor(kids[i].age).id;
+    if(bands.indexOf(b)===-1) bands.push(b);
   }
-  if(kids.length>1){
-    var k0=kids[0], k1=kids[1];
-    var c0=counts[0], c1=counts[1%counts.length];
-    var d0=(k0.days===undefined)?7:k0.days, d1=(k1.days===undefined)?7:k1.days;
-    el('weekLine').textContent = k1.name+' got '+c1+' in '+d1+' days with you. '+k0.name+' got '+c0+' in '+d0+'. Worth looking at the days before you read anything into the difference.';
-  } else if(kids.length===1){
-    var dd=(kids[0].days===undefined)?7:kids[0].days;
-    el('weekLine').textContent = 'Three moments with '+kids[0].name+' in '+dd+' days, across two of them.';
-  } else {
-    el('weekLine').textContent = 'Add a child and this fills in.';
+  if(!bands.length){ box.innerHTML = '<div class="card flat"><p>Add a child and a note appears here.</p></div>'; return; }
+
+  var pool = [];
+  for(i=0;i<bands.length;i++){
+    var list = NOTES[bands[i]] || [];
+    for(var j=0;j<list.length;j++) pool.push({ band:bands[i], n:list[j] });
   }
+  /* same note all day, a different one tomorrow */
+  var day = Math.floor(Date.now()/86400000);
+  var pick = pool[day % pool.length];
+  var label = '';
+  for(i=0;i<BANDS.length;i++){ if(BANDS[i].id===pick.band) label = BANDS[i].label; }
+
+  box.innerHTML =
+    '<div class="card">' +
+      '<p class="eyebrow">'+esc(label)+'</p>' +
+      '<h3>'+esc(pick.n[0])+'</h3>' +
+      '<p style="color:var(--ink);font-size:16px;line-height:1.55">'+esc(pick.n[1])+'</p>' +
+      '<p class="srcline">'+esc(pick.n[2])+'</p>' +
+    '</div>';
 }
 
 /* ---------------- timer ---------------- */
