@@ -293,10 +293,12 @@ textarea{
           <button class="btn" data-go="kids">Add my children</button>
           <button class="btn ghost" id="exampleFamily">Show me an example family</button>
           <button class="btn quiet" onclick="eraseAll()">Erase everything</button>
+          <button class="btn quiet back" data-go="today" id="welcomeBack">&larr; Back to today</button>
         </section>
 
         <!-- 2. KIDS -->
         <section class="screen" id="sc-kids" hidden>
+          <button class="btn quiet back" data-go="today">&larr; Back</button>
           <p class="eyebrow">Setup</p>
           <h2 class="s-title">Add a child</h2>
           <div id="kidlist"></div>
@@ -804,6 +806,7 @@ function go(id){
   if(id==='kids') renderKids();
   if(id==='child') renderChild();
   if(id==='note') renderNote();
+  if(id==='welcome'){ var wb=el('welcomeBack'); if(wb) wb.hidden = !kids.length; }
   if(id==='noticed') renderNoticed();
   if(id==='say') renderScripts();
   if(id!=='presence') stopTimer();
