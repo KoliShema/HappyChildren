@@ -154,6 +154,14 @@ body{
   border-radius:16px;background:var(--coral-soft);color:var(--ink);border-left:4px solid var(--coral);
 }
 .note{font-size:14.5px;color:var(--muted);margin:0}
+.ev{font-size:13.5px!important;padding:8px 0!important;min-height:40px!important}
+.evbody{font-size:14px;color:var(--muted);line-height:1.55;margin:0;padding-top:4px;border-top:1px solid var(--line)}
+.card.urgent{border:2px solid var(--coral)}
+.urgent-eye{color:var(--coral)!important}
+.steps-list{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+.step{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;align-items:start;font-size:15px;line-height:1.5}
+.step .num{font-weight:700;color:var(--coral);font-variant-numeric:tabular-nums}
+.numbers{font-size:14.5px;line-height:1.55;margin:0;padding:14px 16px;border-radius:14px;background:var(--coral-soft);color:var(--ink)}
 .rule{height:3px;background:var(--coral);border:0;margin:6px 0;width:40px;border-radius:3px;opacity:.45}
 #todayCards{display:flex;flex-direction:column;gap:14px}
 .card.muted{opacity:.6}
@@ -341,7 +349,7 @@ textarea{
         <section class="screen" id="sc-say" hidden>
           <p class="eyebrow">Say it</p>
           <h2 class="s-title">For the moment you&rsquo;re in</h2>
-          <p class="s-sub">Nothing to memorize. Borrow a line when yours won&rsquo;t come.</p>
+          <p class="s-sub">Nothing to memorize. Borrow a line when yours won&rsquo;t come. If a child has told you something frightening, the last card on this screen is the one to read.</p>
           <div id="scriptList" style="display:flex;flex-direction:column;gap:14px"></div>
         </section>
 
@@ -606,15 +614,17 @@ var BANDS = [
 ];
 
 var SCRIPTS = [
-  { k:'They’re melting down', s:'You really wanted that. You’re so mad.', n:'Then stop. You don’t have to add “but.”' },
-  { k:'You lost your temper', s:'I shouldn’t have yelled. That wasn’t okay, and it wasn’t your fault.', n:'Nothing after it. The second you add “but you were…” it stops being an apology.' },
-  { k:'Instead of “good job”', s:'It fell over twice and you built it again.', n:'Say what you actually saw. They can tell the difference.' },
-  { k:'They told you something hard', s:'Thank you for telling me. I’m glad you did.', n:'Say it before you react. Your face in the next two seconds decides whether you hear the next thing.' },
-  { k:'They won’t talk', s:'You don’t have to talk about it. I’ll be in the kitchen.', n:'Then actually go. Pushing it closes the door for about a week.' },
-  { k:'You’re leaving', s:'I’m going to work. I’ll be back before dinner.', n:'Say when you’re coming back rather than that you’re going. And don’t sneak out.' },
-  { k:'Before you give advice', s:'Do you want me to listen, or do you want ideas?', n:'Works from about eight up. Works on adults too.' },
-  { k:'They did something you’re angry about', s:'I’m angry about what happened. I’m not done with you.', n:'Both parts, in the same breath.' }
+  { k:"They\u2019re melting down", s:"You really wanted that. You\u2019re so mad.", n:"Then stop. Don\u2019t explain it, don\u2019t fix it, don\u2019t tell them it isn\u2019t a big deal.", w:"Lieberman\u2019s team at UCLA found that putting a feeling into words lowers activity in the amygdala and raises it in the prefrontal cortex. A 2018 review of twenty years of this work found the same thing repeatedly. Worth knowing: the effect on how upset people say they feel is smaller than the effect on the body." },
+  { k:"You lost your temper", s:"I shouldn\u2019t have yelled. That wasn\u2019t okay, and it wasn\u2019t your fault.", n:"Nothing after it. The second you add \u201cbut you were\u2026\u201d it stops being an apology.", w:"Tronick found parents and infants are out of step with each other most of the time, moving between in sync and out of sync every few seconds. Mismatch that often is normal and not harmful, provided repair follows. What separates secure attachment from insecure isn\u2019t avoiding the rupture, it\u2019s the quality of the repair." },
+  { k:"Instead of \u201cgood job\u201d", s:"It fell over twice and you built it again.", n:"Say what you actually saw them do. They can tell the difference.", w:"Gunderson and Dweck recorded parents with children aged one to three, then went back five years later. The proportion of praise that was about effort and strategy predicted whether the child believed ability could be grown. Being straight: the same study did not find that praising the child rather than the effort caused the opposite, so this is a reason to do one thing, not a reason to panic about the other." },
+  { k:"They told you something hard", s:"Thank you for telling me. I\u2019m glad you did.", n:"Say it before you react. Your face in the next two seconds decides whether you hear the next thing.", w:"Across guidance from the NSPCC, the National Child Traumatic Stress Network and others, the same point comes first every time: a visible reaction of shock, anger or disgust makes a child stop talking, or decide they\u2019ve done something wrong. If what they\u2019re telling you frightens you, read the last card on this screen before you say anything else." },
+  { k:"They won\u2019t talk", s:"You don\u2019t have to talk about it. I\u2019ll be in the kitchen.", n:"Then actually go. Pushing it closes the door for about a week.", w:"In self-determination theory research, unsolicited advising and lecturing are coded as autonomy-suppressing behaviours \u2014 the opposite of what predicts a young person staying open with a parent. Staying available without requiring them to talk is the autonomy-supportive version of the same moment." },
+  { k:"You\u2019re leaving", s:"I\u2019m going to work. I\u2019ll be back before dinner.", n:"Say when you\u2019re coming back rather than that you\u2019re going. Then go, and don\u2019t circle back.", w:"Every major paediatric source says the same two things: don\u2019t slip out while they\u2019re distracted, because it teaches them you can vanish without warning and they start watching you more anxiously; and once you\u2019ve said goodbye, leave, because lingering or returning makes them do the separation two or three times instead of once." },
+  { k:"Before you give advice", s:"Do you want me to listen, or do you want ideas?", n:"Works from about eight up. Works on adults too.", w:"Most arguments about advice aren\u2019t about the advice. Asking first is the difference between help and being told what to do, and advice that wasn\u2019t asked for is specifically what the research codes as controlling rather than supportive." },
+  { k:"They did something you\u2019re angry about", s:"I\u2019m angry about what happened. I\u2019m not done with you.", n:"Both parts, in the same breath.", w:"Criticism aimed at the child rather than the thing they did is the one half of this research with a clear negative finding: Kamins and Dweck found it produced more helpless responses after a setback, and later work found parent criticism of the person was the strongest negative predictor of a child believing they can improve." }
 ];
+
+var SAFETY = {"k": "They’ve told you something frightening", "s": "I believe you. I’m glad you told me. I’m going to get help for this.", "n": "Abuse, someone hurting them, or hurting themselves. Five things, in order.", "steps": ["Keep your face calm, even if you aren’t. Shock, anger or disgust is what makes a child stop mid-sentence or decide it was their fault.", "Believe them, and say so. Children very rarely invent this.", "Don’t promise to keep it secret. You can say you’ll only tell the people who can help.", "Don’t question them. No details, no “are you sure”, no filling in gaps. Pressing for specifics can make a child take it back, and it can damage a later investigation. Let them say what they say, in their words, and stop there.", "Tell someone who can help, today. Not next week."], "numbers": "In the US: Childhelp, 1-800-422-4453, any hour. If they’ve talked about hurting themselves, call or text 988. Your doctor, their school, or your rav are all reasonable places to start.", "w": "This follows guidance from the NSPCC, whose 2019 research looked specifically at how adults should respond, the National Child Traumatic Stress Network, and Childhelp. They differ on wording and agree on all five steps. The NCTSN also notes children whose caregiver responds supportively recover faster."};
 
 var SCREENS = [
   { id:'welcome', nm:'Welcome', bl:'Names first, no pitch',
@@ -830,12 +840,46 @@ function renderKids(){
 function renderScripts(){
   var box = el('scriptList'); box.innerHTML='';
   for(var i=0;i<SCRIPTS.length;i++){
-    var s = SCRIPTS[i];
-    var d = document.createElement('div');
-    d.className='card';
-    d.innerHTML = '<p class="eyebrow">'+esc(s.k)+'</p><p class="quote">“'+esc(s.s)+'”</p><p>'+esc(s.n)+'</p>';
-    box.appendChild(d);
+    (function(s,idx){
+      var d = document.createElement('div');
+      d.className='card';
+      d.innerHTML = '<p class="eyebrow">'+esc(s.k)+'</p>'+
+        '<p class="quote">“'+esc(s.s)+'”</p>'+
+        '<p>'+esc(s.n)+'</p>'+
+        '<button class="btn quiet ev" aria-expanded="false">Where this comes from ↓</button>'+
+        '<p class="evbody" hidden>'+esc(s.w)+'</p>';
+      var btn = d.querySelector('.ev'), body = d.querySelector('.evbody');
+      btn.onclick = function(){
+        var open = body.hidden;
+        body.hidden = !open;
+        btn.setAttribute('aria-expanded', open ? 'true':'false');
+        btn.innerHTML = open ? 'Hide ↑' : 'Where this comes from ↓';
+      };
+      box.appendChild(d);
+    })(SCRIPTS[i], i);
   }
+
+  var sf = document.createElement('div');
+  sf.className = 'card urgent';
+  var steps = '';
+  for(var j=0;j<SAFETY.steps.length;j++){
+    steps += '<div class="step"><span class="num">'+(j+1)+'</span><span>'+esc(SAFETY.steps[j])+'</span></div>';
+  }
+  sf.innerHTML = '<p class="eyebrow urgent-eye">'+esc(SAFETY.k)+'</p>'+
+    '<p class="quote">“'+esc(SAFETY.s)+'”</p>'+
+    '<p>'+esc(SAFETY.n)+'</p>'+
+    '<div class="steps-list">'+steps+'</div>'+
+    '<p class="numbers">'+esc(SAFETY.numbers)+'</p>'+
+    '<button class="btn quiet ev" aria-expanded="false">Where this comes from ↓</button>'+
+    '<p class="evbody" hidden>'+esc(SAFETY.w)+'</p>';
+  var b2 = sf.querySelector('.ev'), bd2 = sf.querySelector('.evbody');
+  b2.onclick = function(){
+    var open = bd2.hidden;
+    bd2.hidden = !open;
+    b2.setAttribute('aria-expanded', open ? 'true':'false');
+    b2.innerHTML = open ? 'Hide ↑' : 'Where this comes from ↓';
+  };
+  box.appendChild(sf);
 }
 function renderNoticed(){
   var sel = el('n-kid'); sel.innerHTML='';
