@@ -154,6 +154,12 @@ body{
   border-radius:16px;background:var(--coral-soft);color:var(--ink);border-left:4px solid var(--coral);
 }
 .note{font-size:14.5px;color:var(--muted);margin:0}
+.tier{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 10px;border-radius:999px;align-self:flex-start}
+.t-study{background:var(--coral);color:var(--coral-ink)}
+.t-follows{background:var(--coral-soft);color:var(--coral)}
+.t-judgement{background:transparent;color:var(--muted);border:1.5px solid var(--line)}
+.evidence{font-size:14px;color:var(--muted);line-height:1.55;margin:0;padding-top:10px;border-top:1px solid var(--line)}
 .ev{font-size:13.5px!important;padding:8px 0!important;min-height:40px!important}
 .evbody{font-size:14px;color:var(--muted);line-height:1.55;margin:0;padding-top:4px;border-top:1px solid var(--line)}
 .card.urgent{border:2px solid var(--coral)}
@@ -326,7 +332,7 @@ textarea{
           <p class="eyebrow">Something to open with</p>
           <p class="quote" id="m-say"></p>
           <button class="btn quiet" id="whyToggle" aria-expanded="false">Why this works &darr;</button>
-          <div class="card flat" id="whyBox" hidden><p class="body-sm" id="m-why"></p></div>
+          <div class="card flat" id="whyBox" hidden></div>
           <button class="btn" data-go="presence">Start &mdash; phone down</button>
         </section>
 
@@ -537,15 +543,15 @@ var BANDS = [
       { t:'Follow their eyes', m:2, lead:'Name what they’re looking at, then wait.',
         body:'Watch what {name} is looking at and say what it is out loud. Then wait. Three or four seconds, even if nothing is coming. Go back and forth about five times.',
         say:'You see the dog. Big dog… yeah? A big one.',
-        why:'The waiting is the part most people skip.' },
+        why:'The waiting is the part most people skip.', tier:"study", ev:"Harvard\u2019s Center on the Developing Child calls this serve and return. The child signals, you answer, and that exchange is what builds the architecture. The answering is the active part, which is why the instruction is to wait rather than to talk." },
       { t:'Say what you’re doing', m:3, lead:'Narrate the diaper change, out loud.',
         body:'Diaper change, dishes, putting the groceries away. Say what your hands are doing while you do it. {Name} is not bored by any of it.',
         say:'Cold water first. Now the soap. Look at that.',
-        why:'Most of the early language comes out of ordinary routines rather than out of special activities.' },
+        why:'Most of the early language comes out of ordinary routines rather than out of special activities.', tier:"follows", ev:"Narrating ordinary routines is a standard recommendation in the research on how children pick up language, because routines give far more chances to hear words than special activities do. The direction is well supported. The flat claim that routines beat activities is my summary of it, not a single finding." },
       { t:'Stop before you fix it', m:1, lead:'Look at their face for three seconds first.',
         body:'Next time {name} fusses, put down whatever you were about to hand over and look at {their} face for three seconds first.',
         say:'Nothing. You can just look.',
-        why:'Being read is different from being handled, even at this age.' }
+        why:'Being read is different from being handled, even at this age.', tier:"judgement", ev:"I couldn\u2019t find research behind this one. Pausing to read a child before responding is a reasonable idea and sits close to work on how well parents read their infant\u2019s state, but I\u2019m not going to claim a study I haven\u2019t checked." }
     ]},
   { id:'b2', max:5, label:'Ages 3 to 5', headline:'Let them lead',
     need:'{Name} is finding out what happens when {they} get to decide. The most useful five minutes of your day can be the five where you have no plan for {them} at all.',
@@ -553,15 +559,15 @@ var BANDS = [
       { t:'Five minutes, their rules', m:5, lead:'They pick, you follow. No questions.',
         body:'{Name} picks what you do and you follow. No questions, no corrections, no teaching. You can just describe what you see {them} doing. It doesn’t have to be a quiet house.',
         say:'You put the blue one right on top. Now you’re lining them all up.',
-        why:'This is the first phase of Parent-Child Interaction Therapy, where five minutes a day is the treatment itself.' },
+        why:'This is the first phase of Parent-Child Interaction Therapy, where five minutes a day is the treatment itself.', tier:"study", ev:"The best-evidenced thing in this app. Parent-Child Interaction Therapy puts five minutes a day of play the child leads at the centre of its first phase, with the parent describing, reflecting and praising, and not questioning or correcting. The five minutes is the treatment, not a warm-up to it." },
       { t:'Say what you saw', m:1, lead:'Describe it instead of saying good job.',
         body:'Catch yourself before “good job” and describe what actually happened instead.',
         say:'It fell over twice and you built it again.',
-        why:'Describing tells your child what you were paying attention to. “Good job” only tells them you approved.' },
+        why:'Describing tells your child what you were paying attention to. “Good job” only tells them you approved.', tier:"study", ev:"Gunderson and Dweck recorded parents of one to three year olds, then went back five years later. The proportion of praise about effort and strategy predicted whether the child believed ability could be grown. Being straight: the same study did not find the reverse effect for praising the child, so this is a reason to do one thing, not a reason to panic about the other." },
       { t:'Name it before you fix it', m:2, lead:'Say the feeling out loud, then stop.',
         body:'At the next meltdown, say the feeling out loud and then stop. You don’t have to explain it or solve it, and you don’t have to tell {them} it isn’t a big deal.',
         say:'You really wanted the blue cup. You’re so mad about it.',
-        why:'Naming a feeling usually takes some of the heat out of it. Arguing with it usually adds some.' }
+        why:'Naming a feeling usually takes some of the heat out of it. Arguing with it usually adds some.', tier:"study", ev:"Lieberman\u2019s team at UCLA found that putting a feeling into words lowers activity in the amygdala and raises it in the prefrontal cortex, confirmed across twenty years of studies. Worth knowing: the effect on how upset people say they feel is smaller than the effect on the body." }
     ]},
   { id:'b3', max:9, label:'Ages 6 to 9', headline:'Ask past the first answer',
     need:'{Name} will tell you “fine” about a day that was not fine. Getting past that takes a better question, and it takes you not doing something else at the same time.',
@@ -569,15 +575,15 @@ var BANDS = [
       { t:'The worst part too', m:3, lead:'Ask about the worst part of the day.',
         body:'Ask about the best part of the day. Then ask about the worst part, in the same voice, like it is a normal thing to ask about.',
         say:'What was the worst part of today?',
-        why:'If you only ever ask for the good news, that is the only news you get told later on, when it matters more.' },
+        why:'If you only ever ask for the good news, that is the only news you get told later on, when it matters more.', tier:"judgement", ev:"No research supports this particular question, and it cuts against the main finding for older children \u2014 that parents asking is a weaker lever than a child volunteering, and pressing can produce resistance. A six-year-old isn\u2019t a teenager, and asking may well work better at this age. But this card is a bet, not a finding." },
       { t:'Ten minutes, just them', m:10, lead:'Ten minutes with only this one.',
         body:'Ten minutes with only {name}. If there is nobody to take the other kids, after bedtime works, or the drive to one thing works. It doesn’t need an activity.',
         say:'I’m not sharing you for the next ten minutes.',
-        why:'In a house with more than one child, undivided attention runs out before time does.' },
+        why:'In a house with more than one child, undivided attention runs out before time does.', tier:"follows", ev:"Research on parental differential treatment links unequal treatment between siblings to more behaviour problems, which is the thing this is meant to head off. The ten minutes is a round number, not a result." },
       { t:'Say the effort out loud', m:1, lead:'One true thing you saw them try.',
         body:'Say one true thing you saw {name} try today. Not something {they} finished, just something {they} tried.',
         say:'You kept going at that for a long time. I saw.',
-        why:'Effort you say out loud is effort they will do again.' }
+        why:'Effort you say out loud is effort they will do again.', tier:"study", ev:"Same work as \u201csay what you saw\u201d: effort and strategy praise in early childhood predicted a child\u2019s later belief that ability can be grown." }
     ]},
   { id:'b4', max:12, label:'Ages 10 to 12', headline:'Side by side',
     need:'{Name} is starting to manage what you know about {their} life. Pressure closes that down. Being near {them} with nothing in particular to say can open it.',
@@ -585,15 +591,15 @@ var BANDS = [
       { t:'Shoulder to shoulder', m:12, lead:'Talk in the car, not face to face.',
         body:'In the car, at the sink, or even just walking to the store. Talk while you are both facing something else, and don’t turn and look at {them}.',
         say:'Anything new with that group chat thing?',
-        why:'Looking right at them raises the stakes at this age. Sitting next to them lowers it.' },
+        why:'Looking right at them raises the stakes at this age. Sitting next to them lowers it.', tier:"follows", ev:"Stattin and Kerr found that what parents know about a teenager\u2019s life is predicted far more by the child volunteering it than by parents asking, and that pressure reduces what gets told. Lowering the pressure is the evidenced part. That a car specifically beats sitting face to face has not been tested." },
       { t:'Be bored in the same room', m:10, lead:'Go sit where they are. No topic.',
         body:'Go where {name} is and do nothing in particular. You don’t need a topic, and you can leave your phone somewhere else.',
         say:'Nothing. You’re just there.',
-        why:'At this age what they tell you comes out without warning, and only when you are already in the room.' },
+        why:'At this age what they tell you comes out without warning, and only when you are already in the room.', tier:"follows", ev:"Same source. Being available without requiring anything is the autonomy-supportive version of the same moment. Nobody has measured being in the room, but it is the shape of what the research points at." },
       { t:'Ask about their world', m:4, lead:'Not school. The thing they care about.',
         body:'Ask about the thing {name} actually cares about, the game or the song or who isn’t talking to who, and let {them} explain it to you badly.',
         say:'Explain that thing you were telling me about. I didn’t get it.',
-        why:'Getting to be the one who knows more than you is rare at this age, and they will usually take it.' }
+        why:'Getting to be the one who knows more than you is rare at this age, and they will usually take it.', tier:"follows", ev:"Parents reacting well to what they\u2019re told predicts a child feeling connected, which predicts more being told later. Letting them be the one who knows more than you is one way of reacting well." }
     ]},
   { id:'b5', max:17, label:'Ages 13 to 17', headline:'Be reachable',
     need:'{Name} needs you less and still needs you completely. The job moves from doing things with {them} to being available, awake and calm and the one who goes first after a fight.',
@@ -601,15 +607,15 @@ var BANDS = [
       { t:'Listen or ideas?', m:3, lead:'Ask which one they want first.',
         body:'When {name} brings you a problem, you can ask which one {they} want before you start helping.',
         say:'Do you want me to just listen, or do you want ideas?',
-        why:'Most of the fights about advice are really about not being asked first.' },
+        why:'Most of the fights about advice are really about not being asked first.', tier:"study", ev:"In self-determination theory research, unsolicited advising and lecturing are coded as autonomy-suppressing behaviours. Asking first is what separates help from being told what to do." },
       { t:'Be up when they get in', m:15, lead:'Stay up. Don’t ask them anything.',
         body:'Stay up if you can. Make a drink, say one ordinary thing, go to bed. If you can’t stay up, leave something out on the counter for {them}.',
         say:'There’s food if you want it. Night.',
-        why:'Teenagers talk on their own schedule, and it is usually late.' },
+        why:'Teenagers talk on their own schedule, and it is usually late.', tier:"follows", ev:"The circadian shift is real and documented \u2014 melatonin releases later through adolescence, so staying up late is biology rather than defiance. That they therefore talk late is an inference from that, not a finding." },
       { t:'You go first', m:5, lead:'Say your part of the last fight.',
         body:'After the last fight, go back and say your part of it out loud, with no “but” on the end.',
         say:'I shouldn’t have yelled at you. That one was mine, not yours.',
-        why:'What builds security is the repair, not never having the fight.' }
+        why:'What builds security is the repair, not never having the fight.', tier:"study", ev:"Tronick found parents and infants are out of step with each other most of the time, moving in and out of sync every few seconds. Mismatch that often is normal and not harmful, provided repair follows. What separates secure attachment from insecure isn\u2019t avoiding the rupture, it\u2019s the quality of the repair." }
     ]}
 ];
 
@@ -642,7 +648,7 @@ var SCREENS = [
   { id:'noticed', nm:'Noticed', bl:'One line a day, kept for your child',
     why:'<strong>This is what is here instead of streaks.</strong> You write one line about something your child did, and it piles up into something you could hand them at sixteen. It brings people back without anyone feeling caught out, and it quietly trains the noticing that the 5:1 ratio depends on. Nothing is scored, and no gap is ever shown to you.' },
   { id:'child', nm:'Their page', bl:'What this child needs at this age',
-    why:'<strong>Everything about one child in one place.</strong> The stage in plain words, the three things that fit it, and what you have written down. This is also where “not with me today” lives now. It used to sit under every card on the Today screen, which added a daily decision to solve a problem most days don’t have. The three lists underneath fold away, with a count on each, so the page is short enough to take in at a glance and you open only the one you came for. Food sits here as two boxes, what they asked for and what they actually ate, because knowing your four-year-old asks for pasta plain and then eats it with sauce is worth remembering and is nobody’s business but yours. It is deliberately not a food diary: nothing is counted, nothing is added up, and a day they barely ate looks the same as any other, because an app that shows a parent what their child didn’t eat is an app that makes dinner harder. Removing a child is here too, kept quiet at the bottom and behind a confirm, because it is rare and it takes the written lines with it. When a birthday moves them into the next stage, this screen changes and the app says so.' },
+    why:'<strong>Everything about one child in one place.</strong> The stage in plain words, the three things that fit it, and what you have written down. This is also where “not with me today” lives now. It used to sit under every card on the Today screen, which added a daily decision to solve a problem most days don’t have. Every suggestion carries a label saying whether it comes from a named study, follows from one, or is a judgement nobody has tested — because a parenting app that cites research for all of its advice, when only some of it is researched, is lying by implication. Two of the fifteen say plainly that they are guesses. The three lists underneath fold away, with a count on each, so the page is short enough to take in at a glance and you open only the one you came for. Food sits here as two boxes, what they asked for and what they actually ate, because knowing your four-year-old asks for pasta plain and then eats it with sauce is worth remembering and is nobody’s business but yours. It is deliberately not a food diary: nothing is counted, nothing is added up, and a day they barely ate looks the same as any other, because an app that shows a parent what their child didn’t eat is an app that makes dinner harder. Removing a child is here too, kept quiet at the bottom and behind a confirm, because it is rare and it takes the written lines with it. When a birthday moves them into the next stage, this screen changes and the app says so.' },
   { id:'week', nm:'This week', bl:'Which child got less of you',
     why:'<strong>The one thing you can’t see on your own is which child got less of you.</strong> So that is all this shows. No percentage, no streak, no comparison to anybody else. It counts only the days a child was actually with you, which matters when you are running the week on your own or your kids are not all under one roof. One written line, and it reads the same after a bad week as a good one.' }
 ];
@@ -810,7 +816,11 @@ function openMoment(k, mo){
   el('m-mins').innerHTML = minsTag(mo.m);
   el('m-body').textContent = fill(mo.body,k);
   el('m-say').textContent = '“' + fill(mo.say,k) + '”';
-  el('m-why').textContent = mo.why;
+  var tierLabel = { study:'From a study', follows:'Follows from research', judgement:'Judgement, not research' };
+  el('whyBox').innerHTML =
+    '<span class="tier t-'+(mo.tier||'judgement')+'">'+esc(tierLabel[mo.tier]||tierLabel.judgement)+'</span>'+
+    '<p class="body-sm">'+esc(mo.why)+'</p>'+
+    (mo.ev ? '<p class="evidence">'+esc(mo.ev)+'</p>' : '');
   el('whyBox').hidden = true;
   el('whyToggle').setAttribute('aria-expanded','false');
   el('whyToggle').innerHTML = 'Why this works ↓';
