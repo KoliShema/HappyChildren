@@ -173,6 +173,17 @@ body{
   min-width:44px;min-height:44px;border-radius:12px;
 }
 .kidrow .kidx:hover{color:var(--coral);background:var(--coral-soft)}
+.sect{
+  appearance:none;background:none;border:0;cursor:pointer;font-family:inherit;width:100%;
+  display:flex;align-items:center;gap:10px;text-align:left;
+  padding:15px 0;min-height:50px;border-top:1px solid var(--line);
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600;
+}
+.sect .lbl{flex:1;min-width:0}
+.sect .n{letter-spacing:0;text-transform:none;font-size:13px;color:var(--coral);font-weight:700;font-variant-numeric:tabular-nums}
+.sect .cv{letter-spacing:0;font-size:19px;color:var(--coral);transition:transform .2s;transform:rotate(90deg);line-height:1}
+.sect[aria-expanded="true"] .cv{transform:rotate(-90deg)}
+.sectbody{display:flex;flex-direction:column;gap:14px;padding-bottom:6px}
 .field{display:flex;flex-direction:column;gap:7px}
 .field label{font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--muted)}
 .field input, .field select{
@@ -357,18 +368,26 @@ textarea{
             <p id="c-need"></p>
           </div>
           <button class="btn ghost" id="awayToggle">Not with me today</button>
-          <p class="eyebrow">What that looks like</p>
-          <div id="c-moments" style="display:flex;flex-direction:column;gap:14px"></div>
-          <p class="eyebrow">Noticed about <span id="c-name">Mira</span></p>
-          <div id="c-noticed" style="display:flex;flex-direction:column;gap:14px"></div>
-          <p class="eyebrow">Food, for remembering</p>
-          <div class="row2">
-            <div class="field"><label for="f-asked">Asked for</label><input id="f-asked" placeholder="Pasta, no sauce"></div>
-            <div class="field"><label for="f-ate">Actually ate</label><input id="f-ate" placeholder="Three bites"></div>
+          <button class="sect" id="h-moments" aria-expanded="true"><span class="lbl">What that looks like</span><span class="n" id="n-moments"></span><span class="cv">&rsaquo;</span></button>
+          <div class="sectbody" id="b-moments">
+            <div id="c-moments" style="display:flex;flex-direction:column;gap:14px"></div>
           </div>
-          <button class="btn ghost" id="addFood">Keep it</button>
-          <p class="note">What they wanted and what happened. Nothing is counted and nothing is added up, so a day they ate almost nothing looks the same here as any other.</p>
-          <div id="c-foods" style="display:flex;flex-direction:column;gap:14px"></div>
+
+          <button class="sect" id="h-noticed" aria-expanded="false"><span class="lbl">Noticed about <span id="c-name">Mira</span></span><span class="n" id="n-noticed"></span><span class="cv">&rsaquo;</span></button>
+          <div class="sectbody" id="b-noticed" hidden>
+            <div id="c-noticed" style="display:flex;flex-direction:column;gap:14px"></div>
+          </div>
+
+          <button class="sect" id="h-food" aria-expanded="false"><span class="lbl">Food</span><span class="n" id="n-food"></span><span class="cv">&rsaquo;</span></button>
+          <div class="sectbody" id="b-food" hidden>
+            <div class="row2">
+              <div class="field"><label for="f-asked">Asked for</label><input id="f-asked" placeholder="Pasta, no sauce"></div>
+              <div class="field"><label for="f-ate">Actually ate</label><input id="f-ate" placeholder="Three bites"></div>
+            </div>
+            <button class="btn ghost" id="addFood">Keep it</button>
+            <p class="note">What they wanted and what happened. Nothing is counted and nothing is added up, so a day they ate almost nothing looks the same here as any other.</p>
+            <div id="c-foods" style="display:flex;flex-direction:column;gap:14px"></div>
+          </div>
           <button class="btn quiet" id="removeKid">Remove this child</button>
           <button class="btn quiet" data-go="welcome">Start over &rarr;</button>
         </section>
@@ -613,7 +632,7 @@ var SCREENS = [
   { id:'noticed', nm:'Noticed', bl:'One line a day, kept for your child',
     why:'<strong>This is what is here instead of streaks.</strong> You write one line about something your child did, and it piles up into something you could hand them at sixteen. It brings people back without anyone feeling caught out, and it quietly trains the noticing that the 5:1 ratio depends on. Nothing is scored, and no gap is ever shown to you.' },
   { id:'child', nm:'Their page', bl:'What this child needs at this age',
-    why:'<strong>Everything about one child in one place.</strong> The stage in plain words, the three things that fit it, and what you have written down. This is also where “not with me today” lives now. It used to sit under every card on the Today screen, which added a daily decision to solve a problem most days don’t have. Food sits here as two boxes, what they asked for and what they actually ate, because knowing your four-year-old asks for pasta plain and then eats it with sauce is worth remembering and is nobody’s business but yours. It is deliberately not a food diary: nothing is counted, nothing is added up, and a day they barely ate looks the same as any other, because an app that shows a parent what their child didn’t eat is an app that makes dinner harder. Removing a child is here too, kept quiet at the bottom and behind a confirm, because it is rare and it takes the written lines with it. When a birthday moves them into the next stage, this screen changes and the app says so.' },
+    why:'<strong>Everything about one child in one place.</strong> The stage in plain words, the three things that fit it, and what you have written down. This is also where “not with me today” lives now. It used to sit under every card on the Today screen, which added a daily decision to solve a problem most days don’t have. The three lists underneath fold away, with a count on each, so the page is short enough to take in at a glance and you open only the one you came for. Food sits here as two boxes, what they asked for and what they actually ate, because knowing your four-year-old asks for pasta plain and then eats it with sauce is worth remembering and is nobody’s business but yours. It is deliberately not a food diary: nothing is counted, nothing is added up, and a day they barely ate looks the same as any other, because an app that shows a parent what their child didn’t eat is an app that makes dinner harder. Removing a child is here too, kept quiet at the bottom and behind a confirm, because it is rare and it takes the written lines with it. When a birthday moves them into the next stage, this screen changes and the app says so.' },
   { id:'week', nm:'This week', bl:'Which child got less of you',
     why:'<strong>The one thing you can’t see on your own is which child got less of you.</strong> So that is all this shows. No percentage, no streak, no comparison to anybody else. It counts only the days a child was actually with you, which matters when you are running the week on your own or your kids are not all under one roof. One written line, and it reads the same after a bad week as a good one.' }
 ];
@@ -660,6 +679,24 @@ function fill(str,k){
     .replace(/\{they\}/g,p.they).replace(/\{them\}/g,p.them).replace(/\{their\}/g,p.their);
 }
 function minsTag(m){ return '<span class="mins">'+CLOCKSVG+m+' min</span>'; }
+
+/* ---------------- folding sections ---------------- */
+/* Which sections are open is remembered while you switch between children. */
+var sectOpen = { moments:true, noticed:false, food:false };
+function toggleSect(name){
+  sectOpen[name] = !sectOpen[name];
+  paintSect(name);
+}
+function paintSect(name){
+  var head = el('h-'+name), body = el('b-'+name);
+  if(!head || !body) return;
+  body.hidden = !sectOpen[name];
+  head.setAttribute('aria-expanded', sectOpen[name] ? 'true' : 'false');
+}
+function setSectCount(name, n){
+  var e = el('n-'+name);
+  if(e) e.textContent = n ? String(n) : '';
+}
 
 /* ---------------- removing a child ---------------- */
 function removeKid(id){
@@ -835,6 +872,10 @@ function renderChild(){
   rm.textContent = 'Remove ' + k.name;
   rm.onclick = function(){ removeKid(k.id); };
 
+  el('h-moments').onclick = function(){ toggleSect('moments'); };
+  el('h-noticed').onclick = function(){ toggleSect('noticed'); };
+  el('h-food').onclick    = function(){ toggleSect('food'); };
+
   var sw = el('kidSwitch'); sw.innerHTML='';
   for(var i=0;i<kids.length;i++){
     (function(idx){
@@ -888,6 +929,14 @@ function renderChild(){
     el('f-asked').value=''; el('f-ate').value='';
     renderChild();
   };
+
+  var nN=0, nF=0;
+  for(var q=0;q<noticed.length;q++){ if(noticed[q].kid===k.name) nN++; }
+  for(var w2=0;w2<foods.length;w2++){ if(foods[w2].kid===k.name) nF++; }
+  setSectCount('moments', b.moments.length);
+  setSectCount('noticed', nN);
+  setSectCount('food', nF);
+  paintSect('moments'); paintSect('noticed'); paintSect('food');
 }
 function renderWeek(){
   var counts = [3,1,4,2,0];
@@ -998,4 +1047,3 @@ go('today');
 </script>
 </body>
 </html>
-sl
