@@ -361,6 +361,14 @@ textarea{
           <div id="c-moments" style="display:flex;flex-direction:column;gap:14px"></div>
           <p class="eyebrow">Noticed about <span id="c-name">Mira</span></p>
           <div id="c-noticed" style="display:flex;flex-direction:column;gap:14px"></div>
+          <p class="eyebrow">Food, for remembering</p>
+          <div class="row2">
+            <div class="field"><label for="f-asked">Asked for</label><input id="f-asked" placeholder="Pasta, no sauce"></div>
+            <div class="field"><label for="f-ate">Actually ate</label><input id="f-ate" placeholder="Three bites"></div>
+          </div>
+          <button class="btn ghost" id="addFood">Keep it</button>
+          <p class="note">What they wanted and what happened. Nothing is counted and nothing is added up, so a day they ate almost nothing looks the same here as any other.</p>
+          <div id="c-foods" style="display:flex;flex-direction:column;gap:14px"></div>
           <button class="btn quiet" id="removeKid">Remove this child</button>
           <button class="btn quiet" data-go="welcome">Start over &rarr;</button>
         </section>
@@ -605,7 +613,7 @@ var SCREENS = [
   { id:'noticed', nm:'Noticed', bl:'One line a day, kept for your child',
     why:'<strong>This is what is here instead of streaks.</strong> You write one line about something your child did, and it piles up into something you could hand them at sixteen. It brings people back without anyone feeling caught out, and it quietly trains the noticing that the 5:1 ratio depends on. Nothing is scored, and no gap is ever shown to you.' },
   { id:'child', nm:'Their page', bl:'What this child needs at this age',
-    why:'<strong>Everything about one child in one place.</strong> The stage in plain words, the three things that fit it, and what you have written down. This is also where “not with me today” lives now. It used to sit under every card on the Today screen, which added a daily decision to solve a problem most days don’t have. Removing a child is here too, kept quiet at the bottom and behind a confirm, because it is rare and it takes the written lines with it. When a birthday moves them into the next stage, this screen changes and the app says so.' },
+    why:'<strong>Everything about one child in one place.</strong> The stage in plain words, the three things that fit it, and what you have written down. This is also where “not with me today” lives now. It used to sit under every card on the Today screen, which added a daily decision to solve a problem most days don’t have. Food sits here as two boxes, what they asked for and what they actually ate, because knowing your four-year-old asks for pasta plain and then eats it with sauce is worth remembering and is nobody’s business but yours. It is deliberately not a food diary: nothing is counted, nothing is added up, and a day they barely ate looks the same as any other, because an app that shows a parent what their child didn’t eat is an app that makes dinner harder. Removing a child is here too, kept quiet at the bottom and behind a confirm, because it is rare and it takes the written lines with it. When a birthday moves them into the next stage, this screen changes and the app says so.' },
   { id:'week', nm:'This week', bl:'Which child got less of you',
     why:'<strong>The one thing you can’t see on your own is which child got less of you.</strong> So that is all this shows. No percentage, no streak, no comparison to anybody else. It counts only the days a child was actually with you, which matters when you are running the week on your own or your kids are not all under one roof. One written line, and it reads the same after a bad week as a good one.' }
 ];
@@ -624,8 +632,15 @@ function sampleNoticed(){
     { kid:'Mira', text:'Told me the sad part of the story was her favorite part.', when:'Tue' }
   ];
 }
+function sampleFoods(){
+  return [
+    { kid:'Mira', asked:'Pasta, no sauce', ate:'Pasta with sauce, once she saw me eating it', when:'Tue' },
+    { kid:'Eli', asked:'Said he wasn\u2019t hungry', ate:'Most of mine', when:'Mon' }
+  ];
+}
 var kids = sampleKids();
 var noticed = sampleNoticed();
+var foods = sampleFoods();
 var nextId = 3, rot = 0, curKid = 0, timer = null, activeMoment = null;
 
 /* ---------------- helpers ---------------- */
@@ -656,7 +671,10 @@ function removeKid(id){
   var sharedName = false;
   for(i=0;i<kids.length;i++){ if(i!==idx && kids[i].name===k.name) sharedName = true; }
   var notes = 0;
-  if(!sharedName){ for(i=0;i<noticed.length;i++){ if(noticed[i].kid===k.name) notes++; } }
+  if(!sharedName){
+    for(i=0;i<noticed.length;i++){ if(noticed[i].kid===k.name) notes++; }
+    for(i=0;i<foods.length;i++){ if(foods[i].kid===k.name) notes++; }
+  }
 
   var msg = 'Remove ' + k.name + '?';
   if(notes) msg += '\n\nThe ' + notes + (notes===1 ? ' line' : ' lines') + ' you wrote down about ' + k.name + ' will go too. This can\u2019t be undone.';
@@ -668,6 +686,9 @@ function removeKid(id){
     var keep = [];
     for(i=0;i<noticed.length;i++){ if(noticed[i].kid!==k.name) keep.push(noticed[i]); }
     noticed = keep;
+    var keepF = [];
+    for(i=0;i<foods.length;i++){ if(foods[i].kid!==k.name) keepF.push(foods[i]); }
+    foods = keepF;
   }
   if(curKid >= kids.length) curKid = kids.length ? kids.length-1 : 0;
 
@@ -679,6 +700,7 @@ function restoreExample(){
   if(kids.length){ go('today'); return; }
   kids = sampleKids();
   noticed = sampleNoticed();
+  foods = sampleFoods();
   nextId = 3; curKid = 0; rot = 0;
   go('today');
 }
@@ -843,6 +865,29 @@ function renderChild(){
     }
   }
   if(!any) nb.innerHTML='<p class="note">Nothing yet. One line is enough.</p>';
+
+  var fb = el('c-foods'); fb.innerHTML='';
+  var anyF=false;
+  for(var f=0;f<foods.length;f++){
+    if(foods[f].kid===k.name){
+      anyF=true;
+      var fd=document.createElement('div'); fd.className='card flat';
+      fd.innerHTML='<div class="card-head"><span class="who">asked for</span><span class="mins">'+esc(foods[f].when)+'</span></div>'+
+        '<p style="color:var(--ink)">'+esc(foods[f].asked)+'</p>'+
+        (foods[f].ate ? '<p class="eyebrow" style="margin-top:8px">ate</p><p style="color:var(--ink)">'+esc(foods[f].ate)+'</p>' : '');
+      fb.appendChild(fd);
+    }
+  }
+  if(!anyF) fb.innerHTML='<p class="note">Nothing yet.</p>';
+
+  el('addFood').onclick = function(){
+    var asked = el('f-asked').value.trim();
+    var ate = el('f-ate').value.trim();
+    if(!asked && !ate){ el('f-asked').focus(); return; }
+    foods.unshift({ kid:k.name, asked: asked || '\u2014', ate: ate, when:'Today' });
+    el('f-asked').value=''; el('f-ate').value='';
+    renderChild();
+  };
 }
 function renderWeek(){
   var counts = [3,1,4,2,0];
@@ -953,3 +998,4 @@ go('today');
 </script>
 </body>
 </html>
+sl
