@@ -1140,5 +1140,33 @@ el('saveNoticed').onclick = function(){
 loadAll();
 go('today');
 </script>
+<style>
+/* ---- On a phone, be the app rather than a framed demo of one --------
+   Below 700px: the stage padding, the rounded frame, the fixed height,
+   the marketing masthead and the fake status bar all go. The app fills
+   the screen and the tab bar sits above the home indicator.
+   Above 700px the framed presentation is untouched.                  */
+@media (max-width: 700px){
+  html, body{ height:100%; margin:0; background:var(--card); }
+  .stage{
+    max-width:none; margin:0; padding:0;
+    height:100svh; display:flex; flex-direction:column;
+  }
+  .masthead{ display:none; }     /* title + standfirst: presentation only */
+  .statusbar{ display:none; }    /* the fake 7:12 / 100% bar */
+  .phonewrap{ flex:1 1 auto; min-height:0; display:flex; }
+  .phone{
+    width:100%; height:auto; flex:1 1 auto; min-height:0;
+    border-radius:0; box-shadow:none;
+  }
+  .viewport{ min-height:0; }
+  .tabs{ padding-bottom:env(safe-area-inset-bottom, 0px); }
+  .screen{
+    padding-left:max(16px, env(safe-area-inset-left,0px));
+    padding-right:max(16px, env(safe-area-inset-right,0px));
+  }
+  .briefbar{ margin:22px 16px calc(env(safe-area-inset-bottom,0px) + 16px); }
+}
+</style>
 </body>
 </html>
