@@ -9,6 +9,11 @@
   html,body{margin:0}
   img{max-width:100%}
   [hidden]{display:none!important}
+.bandbox{margin:22px 0 4px;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.06);
+  border-left:3px solid var(--coral)}
+.band-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin:0 0 4px}
+.band-head{font-size:16px;font-weight:700;margin:0 0 7px}
+.band-need{font-size:14.5px;line-height:1.6;opacity:.85;margin:0}
 </style>
 <title>HappyChildren</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -326,6 +331,11 @@ textarea{
           <h2 class="s-title" id="m-title">Five minutes, their rules</h2>
           <p class="mins" id="m-mins"></p>
           <p class="body-sm" id="m-body"></p>
+          <div id="bandBox" class="bandbox" hidden>
+            <p class="band-label"></p>
+            <h4 class="band-head"></h4>
+            <p class="band-need"></p>
+          </div>
           <p class="eyebrow">Something to open with</p>
           <p class="quote" id="m-say"></p>
           <button class="btn quiet" id="whyToggle" aria-expanded="false">Why this works &darr;</button>
@@ -843,13 +853,29 @@ function renderToday(){
   if(!kids.length) box.innerHTML = '<div class="card flat"><p>No children added yet. Add one and this fills in.</p></div>';
   el('shuffle').hidden = (shown === 0);
 }
+/* The bands already carry a label, a headline and a short piece on what a
+   child this age needs, written with their name. None of it was ever shown.
+   A parent deciding whether to bother is exactly who it was written for. */
+function fillBand(){
+  var box = el('bandBox');
+  if (!box) return;
+  var kid = kids[curKid];
+  if (!kid) { box.hidden = true; return; }
+  var b = bandFor(kid.age);
+  if (!b || !b.headline) { box.hidden = true; return; }
+  box.querySelector('.band-label').textContent = b.label || '';
+  box.querySelector('.band-head').textContent  = b.headline;
+  box.querySelector('.band-need').textContent  = fill(b.need || '', kid);
+  box.hidden = false;
+}
+
 function openMoment(k, mo){
   activeMoment = { k:k, mo:mo };
   el('m-who').textContent = 'For ' + k.name + ', ' + k.age;
   el('m-title').textContent = mo.t;
   el('m-mins').innerHTML = minsTag(mo.m);
   el('m-body').textContent = fill(mo.body,k);
-  el('m-say').textContent = '“' + fill(mo.say,k) + '”';
+  fillBand(); el('m-say').textContent = '“' + fill(mo.say,k) + '”';
   var tierLabel = { study:'From a study', follows:'Follows from research', judgement:'Judgement, not research' };
   el('whyBox').innerHTML =
     '<span class="tier t-'+(mo.tier||'judgement')+'">'+esc(tierLabel[mo.tier]||tierLabel.judgement)+'</span>'+
