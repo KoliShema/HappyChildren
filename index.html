@@ -1348,5 +1348,43 @@ if ('serviceWorker' in navigator) {
   background:transparent;color:inherit;font:inherit;font-size:16px;margin:10px 0;min-height:46px;box-sizing:border-box}
 .nudge-err{color:#C62828;font-size:13px;min-height:16px;margin-top:6px}
 </style>
+<script>
+/* Getting between the three apps.
+   This lived at the bottom of one screen, which is not findable. It is now
+   a small mark in the top corner of every screen: the three chevrons, which
+   is the Koli Shema mark, so it reads as "back to the whole thing" rather
+   than as another control inside this app. Sits clear of the notch, and
+   does not cover the content beneath it. */
+(function(){
+  if (document.getElementById('appSwitch')) return;
+  function add(){
+    if (document.getElementById('appSwitch')) return;
+    var a = document.createElement('a');
+    a.id = 'appSwitch';
+    a.href = 'https://kolishema.github.io';
+    a.setAttribute('aria-label', 'All the Happy Relationships apps');
+    a.innerHTML = '<i></i><i></i><i></i>';
+    document.body.appendChild(a);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add);
+  else add();
+})();
+</script>
+<style>
+#appSwitch{position:fixed;z-index:800;
+  top:calc(env(safe-area-inset-top,0px) + 10px);
+  right:calc(env(safe-area-inset-right,0px) + 12px);
+  display:flex;gap:3px;align-items:center;
+  padding:11px 12px;border-radius:999px;
+  background:rgba(255,255,255,.10);backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);text-decoration:none;
+  min-height:44px;min-width:44px;box-sizing:border-box;justify-content:center}
+#appSwitch i{display:block;width:4px;height:15px;border-radius:1px;transform:skewX(-14deg)}
+#appSwitch i:nth-child(1){background:#F3A79E}
+#appSwitch i:nth-child(2){background:#EE6E64}
+#appSwitch i:nth-child(3){background:#EB4137}
+#appSwitch:active{background:rgba(255,255,255,.2)}
+@media (prefers-color-scheme:light){ #appSwitch{background:rgba(31,27,86,.07)} }
+</style>
 </body>
 </html>
