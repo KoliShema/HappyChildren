@@ -1178,5 +1178,29 @@ el('saveNoticed').onclick = function(){
 loadAll();
 go('today');
 </script>
+<script>
+/* A way back to the other apps. This app has no settings tab, so the link
+   goes on the Kids screen, which is where the other housekeeping lives. */
+(function(){
+  function add(){
+    var host = document.getElementById('sc-child') || document.getElementById('sc-welcome');
+    if (!host || document.getElementById('backToApps')) return;
+    var a = document.createElement('a');
+    a.id = 'backToApps'; a.className = 'back-apps';
+    a.href = 'https://kolishema.github.io';
+    a.textContent = '\u2190 Happy Relationships';
+    host.appendChild(a);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add);
+  else add();
+  setTimeout(add, 1200);
+})();
+</script>
+<style>
+.back-apps{display:block;text-align:center;margin:26px auto calc(env(safe-area-inset-bottom,0px) + 20px);
+  padding:20px 13px 13px;color:var(--muted,#6F6A94);font-size:14px;text-decoration:none;
+  border-top:1px solid rgba(0,0,0,.08);min-height:44px}
+.back-apps:active{color:var(--coral,#EB4137)}
+</style>
 </body>
 </html>
