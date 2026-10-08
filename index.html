@@ -85,7 +85,7 @@ body{
   line-height:1.55;
   -webkit-font-smoothing:antialiased;
 }
-.stage{max-width:760px;margin:0 auto;padding-inline:20px;padding-block:36px 64px}
+.stage{max-width:540px;margin:0 auto;padding:0;min-height:100svh;display:flex;flex-direction:column}
 
 /* ---------- masthead ---------- */
 .masthead{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;margin-bottom:26px}
@@ -95,12 +95,8 @@ body{
 .standfirst{margin:0;color:var(--muted);font-size:16.5px;max-width:42ch}
 
 /* ---------- device ---------- */
-.phonewrap{display:flex;justify-content:center}
-.phone{
-  width:min(390px,100%);height:clamp(620px,86vh,860px);
-  background:var(--card);border-radius:40px;
-  box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;position:relative;
-}
+.phonewrap{flex:1 1 auto;min-height:0;display:flex}
+.phone{width:100%;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;border-radius:0;box-shadow:none;background:var(--card)}
 .statusbar{
   display:flex;justify-content:space-between;align-items:center;
   padding:16px 26px 8px;font-size:12px;color:var(--muted);font-weight:600;
@@ -108,7 +104,7 @@ body{
 }
 .statusbar b{color:var(--ink);font-weight:600;letter-spacing:-.01em}
 .viewport{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;padding:6px 22px 22px}
-.tabs{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--card)}
+.tabs{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--card);padding-bottom:env(safe-area-inset-bottom,0px)}
 .tabs button{
   appearance:none;background:none;border:0;cursor:pointer;font-family:inherit;
   min-height:62px;padding:10px 2px 14px;font-size:11.5px;font-weight:600;color:var(--muted);
@@ -144,7 +140,7 @@ body{
 :focus-visible{outline:3px solid var(--coral);outline-offset:2px;border-radius:12px}
 
 /* ---------- cards ---------- */
-.card{border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:10px;background:var(--card);box-shadow:var(--shadow-sm)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px;box-shadow:none}
 .card.tap{cursor:pointer;text-align:left;width:100%;font-family:inherit;color:inherit;border:0;transition:transform .15s,box-shadow .15s}
 .card.tap:hover{transform:translateY(-2px);box-shadow:0 18px 34px -22px rgba(31,27,86,.6)}
 .card.flat{box-shadow:none;background:var(--paper-2);border:1px solid var(--line)}
@@ -274,18 +270,9 @@ textarea{
 </head>
 <body>
 <div class="stage">
-
-  <header class="masthead">
-    <svg class="chev" viewBox="0 0 120 44" aria-hidden="true"><path d="M10 0h20l-10 44H0z" fill="var(--coral-tint)"/><path d="M48 0h20l-10 44H38z" fill="var(--mid)"/><path d="M86 0h20l-10 44H76z" fill="var(--coral)"/></svg>
-    <span class="kicker">Koli Shema &middot; Working prototype</span>
-    <h1>HappyChildren</h1>
-    <p class="standfirst">One small thing to do with your child today, and something to say. Then it closes. Tap through it.</p>
-  </header>
-
-  <div class="phonewrap">
+<div class="phonewrap">
     <div class="phone">
-      <div class="statusbar"><span>7:12</span><b>HappyChildren</b><span>100%</span></div>
-      <div class="viewport" id="viewport">
+<div class="viewport" id="viewport">
 
         <!-- 1. WELCOME -->
         <section class="screen" id="sc-welcome" hidden>
@@ -1191,33 +1178,5 @@ el('saveNoticed').onclick = function(){
 loadAll();
 go('today');
 </script>
-<style>
-/* ---- On a phone, be the app rather than a framed demo of one --------
-   Below 700px: the stage padding, the rounded frame, the fixed height,
-   the marketing masthead and the fake status bar all go. The app fills
-   the screen and the tab bar sits above the home indicator.
-   Above 700px the framed presentation is untouched.                  */
-@media (max-width: 700px){
-  html, body{ height:100%; margin:0; background:var(--card); }
-  .stage{
-    max-width:none; margin:0; padding:0;
-    height:100svh; display:flex; flex-direction:column;
-  }
-  .masthead{ display:none; }     /* title + standfirst: presentation only */
-  .statusbar{ display:none; }    /* the fake 7:12 / 100% bar */
-  .phonewrap{ flex:1 1 auto; min-height:0; display:flex; }
-  .phone{
-    width:100%; height:auto; flex:1 1 auto; min-height:0;
-    border-radius:0; box-shadow:none;
-  }
-  .viewport{ min-height:0; }
-  .tabs{ padding-bottom:env(safe-area-inset-bottom, 0px); }
-  .screen{
-    padding-left:max(16px, env(safe-area-inset-left,0px));
-    padding-right:max(16px, env(safe-area-inset-right,0px));
-  }
-  .briefbar{ margin:22px 16px calc(env(safe-area-inset-bottom,0px) + 16px); }
-}
-</style>
 </body>
 </html>
