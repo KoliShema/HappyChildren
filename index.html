@@ -14,6 +14,11 @@
 .band-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin:0 0 4px}
 .band-head{font-size:16px;font-weight:700;margin:0 0 7px}
 .band-need{font-size:14.5px;line-height:1.6;opacity:.85;margin:0}
+.askcard{border:1.5px solid var(--coral,#EB4137)}
+.askrow{display:flex;gap:9px;margin-top:10px}
+.askrow button{flex:1;min-height:46px;border-radius:11px;border:1.5px solid var(--line,#E4E1EF);
+  background:transparent;font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:inherit}
+.askrow button:active{border-color:var(--coral,#EB4137);color:var(--coral,#EB4137)}
 </style>
 <title>HappyChildren</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -267,6 +272,10 @@ textarea{
 .colophon a{color:var(--coral);font-weight:600;text-decoration:none}
 .colophon a:hover{text-decoration:underline}
 </style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Happy Children">
 </head>
 <body>
 <div class="stage">
@@ -693,11 +702,28 @@ function minsTag(m){ return '<span class="mins">'+CLOCKSVG+m+' min</span>'; }
    Everything stays on this device. No server, no account, nothing sent
    anywhere — the same promise as before, except now it survives a refresh. */
 var STORE = 'happychildren-v1';
+/* Moments a parent started, so the app can ask the next day how it went.
+   Self-guided parenting apps see very low completion, and streak-style hooks
+   tend to produce engagement with the app rather than with the child. One
+   question is the opposite of a streak: it asks about the child, and it can
+   be ignored without penalty. */
+var tried = [];
+function hcToday(){ return new Date().toISOString().slice(0,10); }
+function noteTried(m, kidName){
+  if (!m) return;
+  tried = tried.filter(function(x){ return x.on === hcToday(); });
+  tried.unshift({ t: m.t, kid: kidName || '', on: hcToday(), answered: false });
+  saveAll();
+}
+function answerTried(i, how){
+  if (tried[i]) { tried[i].answered = true; tried[i].how = how; saveAll(); }
+  renderToday();
+}
 
 function saveAll(){
   try{
     localStorage.setItem(STORE, JSON.stringify({
-      v: 1, kids: kids, noticed: noticed, foods: foods, nextId: nextId
+      v: 1, kids: kids, noticed: noticed, foods: foods, nextId: nextId, tried: tried
     }));
   }catch(e){ /* private mode or full disk: the app still works, it just won't remember */ }
 }
@@ -712,6 +738,7 @@ function loadAll(){
     noticed = Array.isArray(d.noticed) ? d.noticed : [];
     foods   = Array.isArray(d.foods)   ? d.foods   : [];
     nextId  = typeof d.nextId === 'number' ? d.nextId : kids.length + 1;
+    tried   = Array.isArray(d.tried) ? d.tried : [];
     return true;
   }catch(e){ return false; }   /* anything corrupt: fall back to the example family */
 }
@@ -812,6 +839,7 @@ function go(id){
 
 /* ---------------- renderers ---------------- */
 function renderToday(){
+  renderAsk();
   var box = el('todayCards'); box.innerHTML='';
   var shown = 0;
   for(var i=0;i<kids.length;i++){
@@ -1041,6 +1069,35 @@ function renderChild(){
   setSectCount('food', nF);
   paintSect('moments'); paintSect('noticed'); paintSect('food');
 }
+function renderAsk(){
+  var box = el('askBox');
+  if (!box) {
+    var host = el('todayCards');
+    if (!host || !host.parentNode) return;
+    box = document.createElement('div'); box.id = 'askBox';
+    host.parentNode.insertBefore(box, host);
+  }
+  var i = -1;
+  for (var k = 0; k < tried.length; k++){
+    if (!tried[k].answered && tried[k].on !== hcToday()) { i = k; break; }
+  }
+  if (i === -1) { box.innerHTML = ''; return; }
+  var m = tried[i];
+  box.innerHTML =
+    '<div class="card askcard">' +
+      '<p class="eyebrow">Yesterday</p>' +
+      '<h3>' + esc(m.t) + (m.kid ? ', with ' + esc(m.kid) : '') + '</h3>' +
+      '<p class="muted">Did it happen?</p>' +
+      '<div class="askrow">' +
+        '<button data-a="yes">It happened</button>' +
+        '<button data-a="no">It didn\u2019t</button>' +
+      '</div>' +
+    '</div>';
+  box.querySelectorAll('[data-a]').forEach(function(b){
+    b.onclick = function(){ answerTried(i, b.getAttribute('data-a')); };
+  });
+}
+
 function renderNote(){
   var box = el('noteBox'); if(!box) return;
   /* only bands that match a child you actually added */
@@ -1083,6 +1140,7 @@ var timer = null, total = 0, endsAt = 0;
 
 function startTimer(){
   stopTimer();
+  noteTried((activeMoment||{}).mo, (kids[curKid]||{}).name);
   var mins = (activeMoment && activeMoment.mo && activeMoment.mo.m) ? activeMoment.mo.m : 5;
   total  = mins * 60;
   endsAt = Date.now() + total * 1000;
@@ -1202,5 +1260,15 @@ go('today');
   border-top:1px solid rgba(0,0,0,.08);min-height:44px}
 .back-apps:active{color:var(--coral,#EB4137)}
 </style>
+<script>
+/* Register the worker so the app can be installed and, once the keys and the
+   sending function are in place, receive a daily nudge. The worker itself
+   caches nothing — caching an app is what kept phones on stale copies. */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
 </body>
 </html>
