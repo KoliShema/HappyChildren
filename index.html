@@ -1096,11 +1096,11 @@ var timer = null, total = 0, endsAt = 0;
 
 function startTimer(){
   stopTimer();
-  var mins = (activeMoment && activeMoment.m) ? activeMoment.m : 5;
+  var mins = (activeMoment && activeMoment.mo && activeMoment.mo.m) ? activeMoment.mo.m : 5;
   total  = mins * 60;
   endsAt = Date.now() + total * 1000;
   var t = el('p-title');
-  if (t && activeMoment) t.textContent = activeMoment.t;
+  if (t && activeMoment && activeMoment.mo) t.textContent = activeMoment.mo.t;
   paint();
   timer = setInterval(paint, 1000);
   document.addEventListener('visibilitychange', onWake);
