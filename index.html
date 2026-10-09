@@ -423,7 +423,7 @@ textarea{
         <button data-go="today"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3.5"/><path d="M8 3v4M16 3v4M3.5 10.5h17"/></svg>Today</button>
         <button data-go="say"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5a3 3 0 0 1-3 3H9l-4.5 3.5V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3z"/></svg>Say it</button>
         <button data-go="child"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 20c0-3.4 2.8-5.2 6.2-5.2S15.2 16.6 15.2 20"/><circle cx="17.6" cy="9.8" r="2.4"/><path d="M16.2 15.1c3 0 5 1.8 5 4.9"/></svg>Kids</button>
-        <button data-go="note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 3.5h13v17l-6.5-3.5-6.5 3.5z"/></svg>Note</button>
+        
       </nav>
     </div>
   </div>
@@ -1577,6 +1577,67 @@ if ('serviceWorker' in navigator) {
 #appSwitch i:nth-child(3){background:#EB4137}
 #appSwitch:active{background:rgba(255,255,255,.2)}
 @media (prefers-color-scheme:light){ #appSwitch{background:rgba(31,27,86,.07)} }
+</style>
+<script>
+/* The note had its own tab, which meant competing with the moment for the
+   same forty seconds. Two "one things" is one too many, and a tab is a
+   bigger promise than one short paragraph can keep.
+
+   The writing itself is good and there are twenty of them — a month before
+   anything repeats — so it is not deleted. It moves to the bottom of Today,
+   below the moment, where it reads as something extra rather than a rival. */
+(function(){
+  function todayKey(){ return new Date().toISOString().slice(0,10); }
+
+  function pick(){
+    if (typeof NOTES === 'undefined' || !kids || !kids.length) return null;
+    var kid = kids[curKid] || kids[0];
+    if (!kid) return null;
+    var b = (typeof bandFor === 'function') ? bandFor(kid.age) : null;
+    var key = b && b.id ? b.id : 'b1';
+    var list = NOTES[key] || NOTES['b1'];
+    if (!list || !list.length) return null;
+    var day = Math.floor(Date.parse(todayKey()) / 86400000);
+    return list[day % list.length];
+  }
+
+  function draw(){
+    var host = document.getElementById('sc-today');
+    if (!host) return;
+    var old = document.getElementById('noteOnToday');
+    var n = pick();
+    if (!n) { if (old) old.remove(); return; }
+    if (old) return;
+    var box = document.createElement('div');
+    box.id = 'noteOnToday';
+    box.className = 'note-today';
+    box.innerHTML = '<p class="eyebrow">Worth knowing</p><h4></h4><p class="note-body"></p>';
+    box.querySelector('h4').textContent = n[0] || '';
+    box.querySelector('.note-body').textContent = n[1] || '';
+    var back = document.getElementById('backToApps');
+    if (back && back.parentNode === host) host.insertBefore(box, back); else host.appendChild(box);
+  }
+
+  var oldGo = window.go;
+  if (typeof oldGo === 'function' && !oldGo.__note) {
+    window.go = function(id){
+      /* the tab is gone, so send anything still pointing at it to Today */
+      if (id === 'note') id = 'today';
+      var r = oldGo.apply(this, arguments);
+      if (id === 'today') setTimeout(draw, 40);
+      return r;
+    };
+    window.go.__note = true;
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(draw, 700); });
+  else setTimeout(draw, 700);
+})();
+</script>
+<style>
+.note-today{margin:26px 0 8px;padding:16px 18px;border-radius:14px;background:rgba(31,27,86,.04)}
+.note-today h4{font-size:15.5px;font-weight:700;margin:4px 0 6px}
+.note-today .note-body{font-size:14.5px;line-height:1.6;opacity:.85;margin:0}
+.tabs button{flex:1}
 </style>
 </body>
 </html>
