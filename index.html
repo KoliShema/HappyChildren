@@ -1639,5 +1639,131 @@ if ('serviceWorker' in navigator) {
 .note-today .note-body{font-size:14.5px;line-height:1.6;opacity:.85;margin:0}
 .tabs button{flex:1}
 </style>
+<script>
+/* Today, one thing at a time.
+   -------------------------------------------------------------
+   Somebody who looked at this said he could not tell where he was, where it
+   had come from or where it was going. Today was a stack: a card per child,
+   yesterday's question, the nudge, the note. Nothing had a beginning or an
+   end, and a parent could not tell whether they had done today or not.
+
+   Nielsen Norman call the fix staged disclosure — a linear sequence, one
+   step at a time — and say it suits a task that divides into distinct steps
+   with little interaction between them. Their own example of the failure is
+   a booking system that squeezed every stage onto one screen.
+
+   So: one card. Do it, or not today. Then the screen says you are finished,
+   which was previously impossible to know. Several children arrive one after
+   another rather than all at once.
+
+   The risk named in the same research is that staging quietly hides things
+   people need. So nothing is removed — the nudge keeps its place on Kids,
+   and anybody who wants the whole list taps "show all". */
+(function(){
+  var SEEN = 'hc-today-done';
+  var MODE = 'hc-today-all';
+
+  function today(){ return new Date().toISOString().slice(0,10); }
+  function doneToday(){ try { return JSON.parse(localStorage.getItem(SEEN)||'{}'); } catch(e){ return {}; } }
+  function markDone(id){
+    var d = doneToday();
+    if (d.on !== today()) d = { on: today(), ids: [] };
+    if (d.ids.indexOf(id) === -1) d.ids.push(id);
+    try { localStorage.setItem(SEEN, JSON.stringify(d)); } catch(e){}
+  }
+  function showAll(){ try { return localStorage.getItem(MODE) === '1'; } catch(e){ return false; } }
+
+  /* Which child still has nothing done today? */
+  function nextKid(){
+    var d = doneToday();
+    var ids = (d.on === today() && d.ids) ? d.ids : [];
+    for (var i = 0; i < kids.length; i++){
+      if (ids.indexOf(String(kids[i].id)) === -1) return i;
+    }
+    return -1;
+  }
+
+  function stage(){
+    if (showAll()) return;                       // the parent asked for the pile
+    var host = document.getElementById('todayCards');
+    if (!host || !kids || !kids.length) return;
+
+    var i = nextKid();
+    var cards = host.children;
+
+    if (i === -1) {
+      /* everybody done — say so, instead of showing the same cards again */
+      for (var c = 0; c < cards.length; c++) cards[c].style.display = 'none';
+      if (!document.getElementById('todayDone')) {
+        var d = document.createElement('div');
+        d.id = 'todayDone'; d.className = 'today-done';
+        d.innerHTML = '<p class="eyebrow">That\u2019s today</p>' +
+          '<p class="muted">Tomorrow it will ask how it went.</p>' +
+          '<button class="btn quiet" id="todayMore">Show the rest anyway</button>';
+        host.parentNode.insertBefore(d, host.nextSibling);
+        document.getElementById('todayMore').onclick = function(){
+          d.remove();
+          for (var c2 = 0; c2 < cards.length; c2++) cards[c2].style.display = '';
+        };
+      }
+      return;
+    }
+
+    var gone = document.getElementById('todayDone');
+    if (gone) gone.remove();
+    for (var k = 0; k < cards.length; k++) cards[k].style.display = (k === i) ? '' : 'none';
+
+    /* a way out, and a way to see everything */
+    if (!document.getElementById('todaySkip') && cards[i]) {
+      var row = document.createElement('div');
+      row.id = 'todaySkip'; row.className = 'today-skip';
+      row.innerHTML = '<button class="pw-link" id="skipOne">Not today</button>' +
+                      '<button class="pw-link" id="seeAll">Show all ' + kids.length + '</button>';
+      host.parentNode.insertBefore(row, host.nextSibling);
+      document.getElementById('skipOne').onclick = function(){
+        markDone(String(kids[nextKid()].id));
+        row.remove(); stage();
+      };
+      document.getElementById('seeAll').onclick = function(){
+        try { localStorage.setItem(MODE, '1'); } catch(e){}
+        row.remove();
+        for (var c3 = 0; c3 < cards.length; c3++) cards[c3].style.display = '';
+      };
+    }
+  }
+
+  /* starting a moment counts as having done that child for today */
+  var origStart = window.startTimer;
+  if (typeof origStart === 'function' && !origStart.__staged) {
+    window.startTimer = function(){
+      try { if (kids[curKid]) markDone(String(kids[curKid].id)); } catch(e){}
+      return origStart.apply(this, arguments);
+    };
+    window.startTimer.__staged = true;
+  }
+
+  var origRender = window.renderToday;
+  if (typeof origRender === 'function' && !origRender.__staged) {
+    window.renderToday = function(){
+      var r = origRender.apply(this, arguments);
+      var s = document.getElementById('todaySkip'); if (s) s.remove();
+      setTimeout(stage, 30);
+      return r;
+    };
+    window.renderToday.__staged = true;
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(stage, 800); });
+  else setTimeout(stage, 800);
+})();
+</script>
+<style>
+.today-skip{display:flex;gap:14px;justify-content:center;margin:4px 0 10px}
+.today-skip .pw-link{width:auto;padding:11px 12px;min-height:44px;font-size:13.5px}
+.today-done{text-align:center;padding:26px 18px;margin:8px 0}
+.today-done .eyebrow{margin-bottom:6px}
+.today-done .muted{font-size:14.5px;margin:0 0 16px}
+#todayMore{min-height:44px}
+</style>
 </body>
 </html>
