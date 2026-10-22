@@ -1986,5 +1986,29 @@ hr, .divider{ border-color:#E3E5EA !important; background:#E3E5EA !important; }
   .badge, .pill, .tag{ background:rgba(255,122,26,.18) !important; color:#FFA35C !important; }
 }
 </style>
+<style>
+/* Tangerine text on light, measured rather than guessed.
+
+   Sixteen failures across the three tabs, all at 2.61:1 where 4.5 is the
+   floor: the child's name on every card (span.who, 48 of them), the moment
+   titles, the Say it headings, the counters. The brand is explicit that
+   tangerine on paper fails for text — it belongs on fills, rules and icons.
+
+   Rust #8A3E00 on paper measures 7.6:1. On ink in dark mode tangerine passes,
+   so it goes back there. */
+span.who, span.cv, span.x, a,
+p.eyebrow.urgent-eye,
+#n-moments.n, #n-noticed.n, #n-food.n{
+  color:#8A3E00 !important;
+}
+
+@media (prefers-color-scheme: dark){
+  span.who, span.cv, span.x, a,
+  p.eyebrow.urgent-eye,
+  #n-moments.n, #n-noticed.n, #n-food.n{
+    color:#FF7A1A !important;
+  }
+}
+</style>
 </body>
 </html>
