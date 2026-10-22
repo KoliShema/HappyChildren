@@ -14,11 +14,11 @@
 .band-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;margin:0 0 4px}
 .band-head{font-size:16px;font-weight:700;margin:0 0 7px}
 .band-need{font-size:14.5px;line-height:1.6;opacity:.85;margin:0}
-.askcard{border:1.5px solid var(--coral,#EB4137)}
+.askcard{border:1.5px solid var(--coral,#FF7A1A)}
 .askrow{display:flex;gap:9px;margin-top:10px}
 .askrow button{flex:1;min-height:46px;border-radius:11px;border:1.5px solid var(--line,#E4E1EF);
   background:transparent;font:inherit;font-size:14px;font-weight:600;cursor:pointer;color:inherit}
-.askrow button:active{border-color:var(--coral,#EB4137);color:var(--coral,#EB4137)}
+.askrow button:active{border-color:var(--coral,#FF7A1A);color:var(--coral,#FF7A1A)}
 </style>
 <title>Happy Children</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,16 +31,16 @@
   --paper:#F3F2F8;
   --paper-2:#FBFAFD;
   --card:#FFFFFF;
-  --ink:#1F1B56;
+  --ink:#1A1F2E;
   --muted:#635E85;
   --line:#E4E1EF;
   --coral:#D4402F;
   --coral-ink:#FFFFFF;
   --coral-soft:#FDECE9;
-  --coral-tint:#F3A79E;
-  --mid:#EE6E64;
-  --shadow:0 26px 60px -32px rgba(31,27,86,.5);
-  --shadow-sm:0 10px 28px -20px rgba(31,27,86,.55);
+  --coral-tint:#FFA35C;
+  --mid:#FF9440;
+  --shadow:0 26px 60px -32px rgba(26, 31, 46,.5);
+  --shadow-sm:0 10px 28px -20px rgba(26, 31, 46,.55);
   --ui:"Poppins","Helvetica Neue",Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){
@@ -52,9 +52,9 @@
     --muted:#ADA8D2;
     --line:#352F77;
     --coral:#FF8A76;
-    --coral-ink:#1F1B56;
+    --coral-ink:#1A1F2E;
     --coral-soft:#3A2A66;
-    --coral-tint:#F3A79E;
+    --coral-tint:#FFA35C;
     --mid:#FF9281;
     --shadow:0 26px 60px -32px rgba(0,0,0,.85);
     --shadow-sm:0 10px 28px -20px rgba(0,0,0,.8);
@@ -69,9 +69,9 @@
   --muted:#ADA8D2;
   --line:#352F77;
   --coral:#FF8A76;
-  --coral-ink:#1F1B56;
+  --coral-ink:#1A1F2E;
   --coral-soft:#3A2A66;
-  --coral-tint:#F3A79E;
+  --coral-tint:#FFA35C;
   --mid:#FF9281;
   --shadow:0 26px 60px -32px rgba(0,0,0,.85);
   --shadow-sm:0 10px 28px -20px rgba(0,0,0,.8);
@@ -147,7 +147,7 @@ body{
 /* ---------- cards ---------- */
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;display:flex;flex-direction:column;gap:10px;box-shadow:none}
 .card.tap{cursor:pointer;text-align:left;width:100%;font-family:inherit;color:inherit;border:0;transition:transform .15s,box-shadow .15s}
-.card.tap:hover{transform:translateY(-2px);box-shadow:0 18px 34px -22px rgba(31,27,86,.6)}
+.card.tap:hover{transform:translateY(-2px);box-shadow:0 18px 34px -22px rgba(26, 31, 46,.6)}
 .card.flat{box-shadow:none;background:var(--paper-2);border:1px solid var(--line)}
 .card-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
 .who{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--coral)}
@@ -1450,7 +1450,7 @@ go('today');
 .back-apps{display:block;text-align:center;margin:26px auto calc(env(safe-area-inset-bottom,0px) + 20px);
   padding:20px 13px 13px;color:var(--muted,#6F6A94);font-size:14px;text-decoration:none;
   border-top:1px solid rgba(0,0,0,.08);min-height:44px}
-.back-apps:active{color:var(--coral,#EB4137)}
+.back-apps:active{color:var(--coral,#FF7A1A)}
 </style>
 <script>
 /* Register the worker so the app can be installed and, once the keys and the
@@ -1572,11 +1572,11 @@ if ('serviceWorker' in navigator) {
   -webkit-backdrop-filter:blur(6px);text-decoration:none;
   min-height:44px;min-width:44px;box-sizing:border-box;justify-content:center}
 #appSwitch i{display:block;width:4px;height:15px;border-radius:1px;transform:skewX(-14deg)}
-#appSwitch i:nth-child(1){background:#F3A79E}
-#appSwitch i:nth-child(2){background:#EE6E64}
-#appSwitch i:nth-child(3){background:#EB4137}
+#appSwitch i:nth-child(1){background:#FFA35C}
+#appSwitch i:nth-child(2){background:#FF9440}
+#appSwitch i:nth-child(3){background:#FF7A1A}
 #appSwitch:active{background:rgba(255,255,255,.2)}
-@media (prefers-color-scheme:light){ #appSwitch{background:rgba(31,27,86,.07)} }
+@media (prefers-color-scheme:light){ #appSwitch{background:rgba(26, 31, 46,.07)} }
 </style>
 <script>
 /* The note had its own tab, which meant competing with the moment for the
@@ -1634,7 +1634,7 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 <style>
-.note-today{margin:26px 0 8px;padding:16px 18px;border-radius:14px;background:rgba(31,27,86,.04)}
+.note-today{margin:26px 0 8px;padding:16px 18px;border-radius:14px;background:rgba(26, 31, 46,.04)}
 .note-today h4{font-size:15.5px;font-weight:700;margin:4px 0 6px}
 .note-today .note-body{font-size:14.5px;line-height:1.6;opacity:.85;margin:0}
 .tabs button{flex:1}
@@ -1778,7 +1778,7 @@ if ('serviceWorker' in navigator) {
    gets something. The subject names the app, and the body starts them off
    rather than leaving a blank page. */
 (function(){
-  var TO = 'office.kolishema@gmail.com';
+  var TO = 'momezei@gmail.com';
   var APP = 'Happy Children';
   var HOST = 'sc-kids';
 
@@ -1932,5 +1932,59 @@ if ('serviceWorker' in navigator) {
   document.addEventListener('click', function(){ setTimeout(strip, 200); }, true);
   setTimeout(strip, 1800);
 })();
-</script></body>
+</script><style>
+/* The Mezay rules the first pass missed.
+
+   Swapping the four variables got the broad look right but skipped the
+   details the brand actually specifies. The important one is contrast:
+   tangerine on paper FAILS for text. The streak screen had orange numerals
+   on white cards, which is exactly that failure. Tangerine-family text on a
+   light background is rust; tangerine stays on shapes, rules and buttons.
+
+   Also added: sand for borders and inputs, white for cards sitting on paper,
+   ink tint for dividers, tangerine tint with rust for badges, ink light for
+   cards on an ink background. */
+:root{
+  --mm-ink:#1A1F2E; --mm-ink-light:#2C3448; --mm-ink-muted:#A3A9B5;
+  --mm-ink-tint:#E3E5EA; --mm-tangerine:#FF7A1A; --mm-tangerine-dark:#C95A00;
+  --mm-tangerine-light:#FFA35C; --mm-tangerine-tint:#FFE6D1;
+  --mm-rust:#8A3E00; --mm-paper:#F7F5F0; --mm-sand:#E8E4DB; --mm-slate:#5F6675;
+}
+
+/* tangerine-family TEXT on light must be rust, never #FF7A1A */
+.stat-num, .statNum, .big-num, .count, .num,
+.card .accent, .accent-text, .streak-num{
+  color:#8A3E00 !important;
+}
+
+/* cards on paper are white, with sand borders */
+.card{ background:#fff !important; border-color:#E8E4DB !important; }
+input, textarea, select{
+  background:#fff !important;
+  border-color:#E8E4DB !important;
+  color:#1A1F2E !important;
+}
+hr, .divider{ border-color:#E3E5EA !important; background:#E3E5EA !important; }
+
+/* cards sitting on an ink panel */
+.on-ink .card, .dark .card{ background:#2C3448 !important; border-color:rgba(255,255,255,.1) !important; }
+
+/* badges: tangerine tint with rust text */
+.badge, .pill, .tag{ background:#FFE6D1 !important; color:#8A3E00 !important; }
+
+/* buttons: tangerine fill, ink text, darker on press */
+.btn{ background:#FF7A1A !important; color:#1A1F2E !important; }
+.btn:active{ background:#C95A00 !important; }
+.btn.quiet{ background:transparent !important; color:inherit !important; }
+
+@media (prefers-color-scheme: dark){
+  .card{ background:#2C3448 !important; border-color:rgba(255,255,255,.12) !important; }
+  input, textarea, select{ background:#2C3448 !important; border-color:rgba(255,255,255,.16) !important; color:#F2F1EE !important; }
+  /* on ink, tangerine passes — rust would be too dark */
+  .stat-num, .statNum, .big-num, .count, .num,
+  .card .accent, .accent-text, .streak-num{ color:#FF7A1A !important; }
+  .badge, .pill, .tag{ background:rgba(255,122,26,.18) !important; color:#FFA35C !important; }
+}
+</style>
+</body>
 </html>
